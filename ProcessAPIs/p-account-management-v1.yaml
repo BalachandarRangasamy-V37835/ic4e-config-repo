@@ -1,0 +1,2345 @@
+openapi: 3.0.0
+info:
+  version: v1
+  title: p-account-management
+  description: This API provides services to manage an account entity.
+paths:
+  /health:
+    get:
+      operationId: GET /health
+      description: This is the halth end point, this responds if both API impl and API gateway are in good health for the API to work
+      responses:
+        '200': 
+          $ref: '#/components/responses/only-metadata-responses'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+  /accounts:
+    get:
+      operationId: GET /accounts
+      parameters:
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: "#/components/parameters/account-id"
+        - $ref: "#/components/parameters/account-name"
+        - $ref: "#/components/parameters/tax-id"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/writing-number"
+        - $ref: "#/components/parameters/zip"
+        - $ref: "#/components/parameters/state"
+        - $ref: "#/components/parameters/pocname"
+        - $ref: "#/components/parameters/city"
+         
+      responses:
+        "200":
+          $ref: "#/components/responses/accounts-summary-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}:
+    get:
+      operationId: GET /accounts/{account-number}
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+      responses:
+        "200":
+          $ref: "#/components/responses/account-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+    patch:
+      operationId: PATCH /accounts/{account-number}
+      requestBody:
+        $ref: '#/components/requestBodies/update-account-request' 
+      responses:
+        "200":
+          $ref: "#/components/responses/update-account-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+      parameters:
+       - $ref: '#/components/parameters/account-number'
+       - $ref: '#/components/parameters/company-number'
+       - $ref: "#/components/parameters/aflac-openid-token"
+       - $ref: '#/components/parameters/aflac-correlation-id'
+       - $ref: '#/components/parameters/aflac-transaction-id'             
+  /accounts/{account-number}/members:
+    get:
+      operationId: GET /accounts/{account-number}/members
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/no-of-invoices'
+        - $ref: '#/components/parameters/account-status'
+        - $ref: '#/components/parameters/ssn'        
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/first-name'        
+        - $ref: '#/components/parameters/last-name'
+        - $ref: '#/components/parameters/employee-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/members-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}/persons:
+    get:
+      operationId: GET /accounts/{account-number}/persons
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/persons-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}/otp-histories:
+    get:
+      operationId: GET /accounts/{account-number}/otp-histories
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/otp-history-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}/remarks:
+    get:
+      operationId: GET /accounts/{account-number}/remarks
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/remark-type"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/remarks-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+    post:
+      operationId: POST /accounts/{account-number}/remarks
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "201":
+          $ref: "#/components/responses/create-remarks-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"     
+      requestBody:
+        $ref: '#/components/requestBodies/create-remarks'          
+  /accounts/{account-number}/rerates:
+    get:
+      operationId: GET /accounts/{account-number}/rerates
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/rerate-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}/invoices:
+    get:
+      operationId: GET /accounts/{account-number}/invoices
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/outstanding-flag'
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/invoice-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"
+  /accounts/{account-number}/invoices/{invoice-number}:
+    get:
+      operationId: GET /accounts/{account-number}/invoices/{invoice-number}
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: '#/components/parameters/invoice-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/sort-by'
+        - $ref: '#/components/parameters/sort-order'        
+      responses:
+        "200":
+          $ref: "#/components/responses/invoice-details-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"          
+  /accounts/{account-number}/exceptions:
+    get:
+      operationId: GET /accounts/{account-number}/exceptions
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/requested-by'        
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/exception-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"          
+  /accounts/{account-number}/suspenses/{suspense-number}:
+    get:
+      operationId: GET /accounts/{account-number}/suspenses/{suspense-number}
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: '#/components/parameters/suspense-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/outstanding-flag'
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/suspense-detail-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"                    
+  /accounts/{account-number}/suspenses:
+    get:
+      operationId: GET /accounts/{account-number}/suspenses
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/outstanding-flag'
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/suspense-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"                              
+  /accounts/{account-number}/enhanced-billing-modes:
+    get:
+      operationId: GET /accounts/{account-number}/enhanced-billing-modes
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/enhanced-billing-modes-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"                                        
+  /accounts/{account-number}/lobs:
+    get:
+      operationId: GET /accounts/{account-number}/lobs
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/lobs-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"                                                  
+  /accounts/{account-number}/correspondences:
+    get:
+      operationId: GET /accounts/{account-number}/correspondences
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+        - $ref: "#/components/parameters/aflac-business-event"        
+      responses:
+        "200":
+          $ref: "#/components/responses/correspondences-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"                                                  
+  /accounts/{account-number}/maintenance-histories:
+    get:
+      operationId: GET /accounts/{account-number}/maintenance-histories
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        "200":
+          $ref: "#/components/responses/maintenance-histories-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"          
+  /accounts/{account-number}/sub-accounts:
+    get:
+      operationId: GET /accounts/{account-number}/sub-accounts
+      parameters:
+        - $ref: '#/components/parameters/account-number'
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+      responses:
+        "200":
+          $ref: "#/components/responses/sub-accounts-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses"          
+
+
+components:
+  schemas:
+    summary:
+      allOf:
+        ##- $ref: "#/components/schemas/super-business-entity"
+        - type: object
+          additionalProperties: false
+          properties:
+            account-number:
+              type: string
+            master-account-number:
+              type: string
+            terminations-reason:
+              type: string
+            established-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            associate-number:
+              type: string
+            master-account-name:
+              type: string
+            billing-mode:
+              type: string
+            source-system:
+              type: string
+            last-billed-amount:
+              type: number
+            current-plan-start-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            current-plan-end-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            status:
+              type: string
+            poc:
+              type: string
+            tax-id:
+              type: string
+            currency::
+              type: string
+            migration-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            enroll-period:
+              type: string
+            plan-administrator:
+              type: string
+            employee-count:
+              type: integer
+            category-type:
+              type: string
+            genelco-group-number:
+              type: string
+            name::
+              type: string
+            terminations-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            company-number::
+              type: string
+            language:
+              type: string
+            contact-information:
+              $ref: "#/components/schemas/contact-information"
+    account:
+      allOf:
+        ##- $ref: "#/components/schemas/super-business-entity"
+        - type: object
+          additionalProperties: false
+          properties:
+            account-number:
+              type: string
+            master-account-number:
+              type: string
+            terminations-reason:
+              type: string
+            established-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            associate-number:
+              type: string
+            master-account-name:
+              type: string
+            billing-mode:
+              type: string
+            source-system:
+              type: string
+            last-billed-amount:
+              type: number
+            current-plan-start-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            current-plan-end-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            status:
+              type: string
+            poc:
+              type: string
+            tax-id:
+              type: string
+            currency::
+              type: string
+            migration-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            enroll-period:
+              type: string
+            plan-administrator:
+              type: string
+            employee-count:
+              type: integer
+            category-type:
+              type: string
+            genelco-group-number:
+              type: string
+            name::
+              type: string
+            terminations-date:
+              type: string
+              format: date
+              example: "2021-03-25"
+            company-number::
+              type: string
+            language:
+              type: string
+            contact-information:
+              $ref: "#/components/schemas/contact-information"
+    summaries:
+      type: array
+      items:
+        $ref: "#/components/schemas/account"
+    accounts:
+      type: array
+      items:
+        $ref: "#/components/schemas/account"      
+    account-members:
+      type: array
+      items:
+        $ref: '#/components/schemas/account-member'
+    account-persons:
+      type: array
+      items:
+        $ref: '#/components/schemas/account-person'     
+    account-otp-histories:
+      type: array
+      items:
+        $ref: '#/components/schemas/otp-history'         
+    account-member:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+        cif-number:
+          type: string
+        name:
+          $ref: "#/components/schemas/person-name"
+        employee-number:
+          type: string
+        ssn-number:
+          type: string
+    account-person:
+      type: object
+      additionalProperties: false
+      properties:
+        contact-information:
+          $ref: "#/components/schemas/contact-information"
+        writing-number:
+           type: string
+        person-role:
+          type: string
+        name:
+           $ref: "#/components/schemas/person-name"     
+    otp-history:
+      type: object
+      additionalProperties: false
+      properties:
+        payment-submitted-date:
+          type: string
+          format: date
+        invoice-billed-amount:
+          type: string    
+        payment-submittedby-employee:
+          type: string
+        invoice-number:
+          type: string 
+        payment-scheduled-date:
+          type: string
+          format: date
+        caller-name:
+           $ref: "#/components/schemas/person-name"           
+    rerates:
+      type: array
+      items:
+        $ref: '#/components/schemas/re-rate'
+    re-rate:
+      type: object
+      additionalProperties: false
+      properties:
+        flag-from:
+          type: string
+        flag-to:
+          type: string
+        rerate-from:
+          type: string
+        rerate-dateto:
+          type: string
+          format: datetime
+        maintenance-clerk:
+          type: string  
+        maintenance-datetime:
+          type: string
+          format: datetime
+    invoices:
+      type: array
+      items:
+        $ref: '#/components/schemas/invoice'
+    invoice-details:
+      type: object
+      additionalProperties: false
+      properties:
+        number-of-deducts: 
+          type: string
+        status: 
+          type: string
+        amount-received: 
+          type: string
+        amount-billed: 
+          type: string
+        status-description: 
+          type: string
+        date-paid: 
+          type: string
+          format: date
+        payment-method: 
+          type: string
+        date-received: 
+          type: string
+          format: date
+        rundate: 
+          type: string
+        invoice-number: 
+          type: string
+        special-flag: 
+          type: string   
+          format: date
+        invoice-balance: 
+          type: string
+        ocr-funds: 
+          type: string
+        payment-adjustments: 
+          type: string
+        bill-frequency: 
+          type: string
+        last-date-worked: 
+          type: string
+          format: date
+        due-date: 
+          type: string   
+          format: date
+        bill-period-start-date: 
+          type: string
+        desk-code: 
+          type: string
+        invoice-adjustments: 
+          type: string
+        micro-film-index: 
+          type: string   
+          format: date      
+        cashier-batch: 
+          type: string
+        bank-deposit-number: 
+          type: string
+          format: date
+        accounting-list: 
+            type: object
+            properties: 
+              account-description: 
+                type: string
+                example: AA
+              suspense-amount: 
+                type: string
+                example: AA
+        run-date: 
+          type: string   
+          format: date
+        batch-number:
+          type: string
+          example: AA
+        line-items:
+          type: array
+          items:
+            $ref: '#/components/schemas/invoice-line-item'   
+          
+    invoice:
+      type: object
+      additionalProperties: false
+      properties:
+        number-of-deducts: 
+          type: string
+        status: 
+          type: string
+        amount-received: 
+          type: string
+        amount-billed: 
+          type: string
+        status-description: 
+          type: string
+        date-paid: 
+          type: string
+          format: date
+        payment-method: 
+          type: string
+        date-received: 
+          type: string
+          format: date
+        rundate: 
+          type: string
+        invoice-number: 
+          type: string
+        special-flag: 
+          type: string   
+          format: date
+        invoice-balance: 
+          type: string
+        ocr-funds: 
+          type: string
+        payment-adjustments: 
+          type: string
+        bill-frequency: 
+          type: string
+        last-date-worked: 
+          type: string
+          format: date
+        due-date: 
+          type: string   
+          format: date
+        bill-period-start-date: 
+          type: string
+        desk-code: 
+          type: string
+        invoice-adjustments: 
+          type: string
+        micro-film-index: 
+          type: string   
+          format: date      
+        cashier-batch: 
+          type: string
+        bank-deposit-number: 
+          type: string
+          format: date
+        accounting-list: 
+            type: object
+            properties: 
+              account-description: 
+                type: string
+                example: AA
+              suspense-amount: 
+                type: string
+                example: AA
+        run-date: 
+          type: string   
+          format: date
+        batch-number:
+          type: string
+          example: AA
+
+    invoice-line-item:
+      type: object
+      additionalProperties: false
+      properties:
+        amount-received: 
+          type: string
+        letter-code: 
+          type: string
+        pay-code: 
+          type: string
+        policy-number: 
+          type: string
+        insured-name: 
+          type: string
+        employee-number: 
+          type: string
+          format: date
+        account-month: 
+          type: string
+        months-applied: 
+          type: string
+        paid-aheadrm: 
+          type: string
+        pended: 
+          type: string
+        line-number: 
+          type: string   
+        is-psw: 
+          type: string   
+          format: date 
+        department: 
+          type: string   
+        amount-billed: 
+          type: string   
+        total-billed: 
+          type: string   
+    exceptions:
+      type: array
+      items:
+        $ref: '#/components/schemas/exception'
+    exception:
+      type: object
+      additionalProperties: false
+      properties:
+        description: 
+          type: string
+        expiration-date: 
+          type: string
+          format: date
+        name: 
+          type: string
+    suspenses:
+      type: array
+      items:
+        $ref: '#/components/schemas/suspense'
+    correspondences:
+      type: array
+      items:
+        $ref: '#/components/schemas/correspondence'        
+    enhanced-billing-modes:
+        $ref: '#/components/schemas/enhanced-billing-mode'
+    lobs:
+        $ref: '#/components/schemas/lob'          
+    accounts-details:
+        $ref: '#/components/schemas/account-details'      
+    suspenses-details:
+      type: array
+      items:
+        $ref: '#/components/schemas/suspense'      
+    suspense:
+      type: object
+      additionalProperties: false
+      properties:
+        desk-code:
+          type: string
+        description: 
+          type: string  
+        suspense-number: 
+          type: string            
+        batch-number: 
+          type: string   
+        suspense-amount: 
+          type: string   
+        entry-date: 
+          type: string 
+          format: date
+    correspondence:
+      type: object
+      additionalProperties: false
+      properties:
+        desk-code:
+          type: string
+        status: 
+          type: string  
+        tracking-number: 
+          type: string            
+        date-completed: 
+          type: string 
+          format: date
+        order-code: 
+          type: string   
+        last-changed-date: 
+          type: string 
+          format: date
+        date-recieved: 
+          type: string
+          format: date
+        date-pended: 
+          type: string   
+    enhanced-billing-mode:
+      type: object
+      additionalProperties: false
+      properties:
+        deduction-frequency:
+          type: string
+        payroll-processing-day: 
+          type: string
+        bill-period-start-date: 
+          type: string
+          format: date  
+        enhanced-billing-periods: 
+          type: array
+          items:
+            $ref: '#/components/schemas/enhanced-billing-periods'
+    lob:
+      type: object
+      additionalProperties: false
+      properties:
+        lobs: 
+          type: array
+          items: 
+            type: object
+            properties: 
+              ex: 
+                type: string
+                example: AA
+              definition: 
+                type: string
+                example: AA
+              approval-date: 
+                type: string
+                example: AA
+              withdrawal-date: 
+                type: string
+                example: AA
+        personal-long-term-care: 
+          type: object
+          properties: 
+            participation-req-met: 
+              type: string
+              example: AA
+            start-date: 
+              type: string
+              example: AA
+            stop-date: 
+              type: string
+              example: AA
+        dental-plan-participation: 
+          type: object
+          properties: 
+            number-of-eligible-employees: 
+              type: string
+              example: AA
+            participation-req: 
+              type: string
+              example: AA
+            participation-req-met: 
+              type: string
+              example: AA
+            start-date: 
+              type: string
+              example: AA
+            stop-date: 
+              type: string
+              example: AA
+        group-short-term-disability: 
+          type: object
+          properties: 
+            number-of-eligible-employees: 
+              type: string
+              example: AA
+            participation-req: 
+              type: string
+              example: AA
+            current-employees-waiting-period: 
+              type: string
+              example: AA
+            approval-date: 
+              type: string
+              example: AA
+            withdrawal-date: 
+              type: string
+              example: AA
+            new-employees-waiting-period: 
+              type: string
+              example: AA
+        gi: 
+          type: object
+          properties: 
+            gibenefit-amount: 
+              type: string
+              example: AA
+            gielimination-period: 
+              type: string
+              example: AA
+            gibenefit-period: 
+              type: string
+              example: AA
+        si: 
+          type: object
+          properties: 
+            sibenefit-amount: 
+              type: string
+              example: AA
+            sielimination-period: 
+              type: string
+              example: AA
+            sibenefit-period: 
+              type: string
+              example: AA
+          
+    account-details:
+      type: object
+      additionalProperties: false
+      properties:      
+        specification-code: 
+          type: string
+          example: C
+        due-day: 
+          type: string
+          example: 1
+        initial-premium: 
+          type: string
+          example: P
+        second-bill-day: 
+          type: string
+          example: 0
+        min-part-ind: 
+          type: string
+          example: N
+        large-account-ind: 
+          type: string
+          example: false
+        special-flag: 
+          type: string
+          format: nullable
+        is-vip: 
+          type: string
+          example: false
+        smri-indicator: 
+          type: string
+          example: true
+        other-information: 
+          type: object
+          properties: 
+            employee-count-maint-date: 
+              type: string
+              example: 19940519
+            non-pay-code-maint-date: 
+              type: string
+              example: 20030208
+            delayed-run-date: 
+              type: string
+              format: nullable
+            non-pay-code: 
+              type: string
+              example: 04
+            unpaid-lapse: 
+              type: string
+              example: 6
+            un-paid-lapse-maint-date: 
+              type: string
+              example: 20030208
+            last-billed-count: 
+              type: string
+              example: 0
+            last-billed-premium: 
+              type: string
+              example: 0.00
+            employee-count: 
+              type: string
+              example: 50
+        category-type: 
+          type: string
+          example: Payroll
+        mode-due-date: 
+          type: string
+          example: 19940601
+        is-complex-account: 
+          type: string
+          example: false
+        geo-code: 
+          type: string
+          format: nullable
+        policy-level-indicators: 
+          type: object
+          properties: 
+            status13: 
+              type: string
+              format: nullable
+            noitce-insured: 
+              type: string
+              format: nullable
+            status22: 
+              type: string
+              format: nullable
+            notice-agent: 
+              type: string
+              format: nullable
+            noitce-account: 
+              type: string
+              format: nullable
+            notice-delay: 
+              type: string
+              format: nullable
+        policy-holder-count: 
+          type: string
+          example: 0
+        neg-accounting: 
+          type: string
+          example: 2
+        broker-number: 
+          type: string
+          format: nullable
+        number-of-periods: 
+          type: string
+          example: 0
+        broker-end-date: 
+          type: string
+          format: nullable
+        exchange-indicator: 
+          type: string
+          example: false
+        source-systems: 
+          type: array
+          items: 
+            type: object
+            properties: 
+              source-system-key: 
+                type: string
+                example: A0001
+              company-number: 
+                type: string
+                example: 01
+              source-system-name: 
+                type: string
+                example: GM
+        initial-start-date: 
+          type: string
+          example: 20030208
+        deduct-frequency: 
+          type: string
+          format: nullable
+        is-cpraccount: 
+          type: string
+          example: false
+        due-code: 
+          type: string
+          example: 1
+        status-effective-date: 
+          type: string
+          example: 20310515
+        duration-control: 
+          type: string
+          example: 0
+        first-bill-day: 
+          type: string
+          example: 14
+        broker-start-date: 
+          type: string
+          format: nullable
+        lapse-notice-data: 
+          type: object
+          properties: 
+            lapse-invoice-number: 
+              type: string
+              format: nullable
+            lapse-late-notice: 
+              type: string
+              format: nullable
+            lapse-notice: 
+              type: string
+              format: nullable
+            lapse-delayed: 
+              type: string
+              example: N
+            lapse-pending-notice: 
+              type: string
+              format: nullable
+        is-cor: 
+          type: string
+          example: false
+        state-code: 
+          type: string
+          example: 0
+        bill-code: 
+          type: string
+          example: 2
+        account-type: 
+          type: string
+          example: 3
+        is-ibill: 
+          type: string
+          example: false
+        account-level-indicators: 
+          type: object
+          properties: 
+            delay-run-date: 
+              type: string
+              format: nullable
+            lapse: 
+              type: string
+              format: nullable
+            mail-notice: 
+              type: string
+              example: Y
+            auto-lapse-maint-date: 
+              type: string
+              format: nullable
+            late-notice: 
+              type: string
+              format: nullable
+            bad-check: 
+              type: string
+              format: nullable
+            auto-lapse: 
+              type: string
+              example: Y
+            next-run-date: 
+              type: string
+              example: 20341104
+            mail-notice-maint-date: 
+              type: string
+              format: nullable
+            lapse-pending: 
+              type: string
+              format: nullable
+        service-information: 
+          type: object
+          properties: 
+            number-of-months-inactive: 
+              type: string
+              example: 0
+            last-service-date: 
+              type: string
+              format: nullable
+        number-of-months: 
+          type: string
+          example: 0
+        tgi: 
+          type: string
+          format: nullable
+        org-start-date: 
+          type: string
+          format: nullable
+        coverage-information: 
+          type: object
+          properties: 
+            ind-code: 
+              type: string
+              example: 11
+            abi: 
+              type: string
+              format: nullable
+            occ: 
+              type: string
+              format: nullable
+        broker-level: 
+          type: string
+          example: 0
+        handling: 
+          type: string
+          format: nullable
+            
+    enhanced-billing-periods:
+      type: object
+      additionalProperties: false
+      properties:
+        period1:
+          type: string
+          format: date  
+        period2: 
+          type: string
+          format: date  
+        period3: 
+          type: string
+          format: date  
+        period4: 
+          type: string
+          format: date  
+        period5: 
+          type: string
+          format: date  
+        month: 
+          type: string         
+    maintenance-histories:
+      type: array
+      items:
+        $ref: '#/components/schemas/maintenance-history'
+    sub-accounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/sub-account'        
+    maintenance-history:
+      type: object
+      additionalProperties: false
+      properties:
+        notes: 
+          type: string
+        updated-by: 
+          type: string
+        update-timestamp: 
+          type: string
+          format: datetime
+    sub-account:
+      type: object
+      additionalProperties: false
+      properties:
+        start-date: 
+          type: string
+          example: 20180423
+        coverages: 
+          type: array
+          items: 
+            type: object
+            properties: 
+              product: 
+                type: string
+                example: AG.CI.21.K.V.BASE.E.
+              lob: 
+                type: string
+                example: Critical Illness
+        sub-account-number: 
+          type: string
+          example: B-0-CTR0002010580
+        sub-account-status: 
+          type: string
+          example: Never in Force
+        payment-method: 
+          type: string
+          example: Lock box             
+    remarks:
+      type: object
+      properties:
+        remarks:
+          type: array
+          items:
+                type: object
+                properties:
+                $ref: "#/components/schemas/remark"
+        special-instruction:
+          type: string
+    create-remark-message:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Remarks added successfully"
+    update-account-message:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Account Updated successfully"             
+    remark:
+      type: object
+      properties:
+        remark-notes:
+          type: array
+          items:
+                type: object
+                properties:
+                $ref: "#/components/schemas/remark-note"
+        remark-type:
+          type: string
+    update-account:
+      type: object
+      properties:
+        account: 
+          type: object
+          properties: 
+            user-id: 
+              type: string
+              example: A0001
+            first-name: 
+              type: string
+              example: David
+            last-name: 
+              type: string
+              example: Miller
+            fields:
+                  $ref: "#/components/schemas/email-address" 
+            billing: 
+              type: object
+              properties: 
+                name: 
+                  type: string
+                  example: DAVID
+                phone: 
+                  type: string
+                  example: 971-533-9792  
+                ext: 
+                  type: string
+                  example: 971-533-9792
+                fax: 
+                  type: string
+                  example: 971-533-9792                    
+                line1: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line2: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line3: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line4: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI                  
+                line5: 
+                  type: string
+                  example: PO BOX 88345                  
+                city: 
+                  type: string
+                  example: ABIE
+                state: 
+                  type: string
+                  example: NE
+                zip: 
+                  type: string
+                  example: 680010000                     
+            location: 
+              type: object
+              properties: 
+                phone: 
+                  type: string
+                  example: 971-533-9792  
+                ext: 
+                  type: string
+                  example: 971-533-9792
+                fax: 
+                  type: string
+                  example: 971-533-9792                    
+                line1: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line2: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line3: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI
+                line4: 
+                  type: string
+                  example: ATTN ONLY FOR Q60000 SERI                  
+                line5: 
+                  type: string
+                  example: PO BOX 88345                        
+                city: 
+                  type: string
+                  example: ABIE
+                state: 
+                  type: string
+                  example: NE
+                zip: 
+                  type: string
+                  example: 680010000 
+                           
+                    
+    create-remark:
+      type: object
+      additionalProperties: false
+      properties:
+        comment:
+          type: string 
+    remark-note:
+      type: object
+      additionalProperties: false
+      properties:
+        remark-note:
+          type: string        
+    person-name:
+      type: object
+      additionalProperties: false
+      properties:
+        first-name:
+          type: string
+        middle-name:
+          type: string
+        last-name:
+          type: string
+        full-name:
+          type: string
+        salutation:
+          type: string
+        suffix:
+          type: string        
+    code-description: 
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        type:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        code:
+          type: string
+        short-description:
+          type: string
+        long-description:
+          type: string
+    code-descriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/code-description"
+    pagination-info:
+      type: object
+      additionalProperties: false
+      properties:
+        page-number:
+          type: integer
+        page-size:
+          type: integer
+        total-item-count:
+          type: integer
+        has-more-pages:
+          type: boolean          
+    aflac-response-metadata:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+        pagination-info:
+          $ref: "#/components/schemas/pagination-info"
+    contact-information:
+      type: object
+      additionalProperties: false
+      properties:
+        addresses:
+          $ref: "#/components/schemas/addresses"
+        phones:
+          $ref: "#/components/schemas/phones"
+        emails:
+          $ref: "#/components/schemas/email-addresses"
+        fax-list:
+          $ref: "#/components/schemas/fax-list"
+    address:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        line1:
+          type: string
+          minLength: 0
+          maxLength: 64
+        line2:
+          type: string
+          minLength: 0
+          maxLength: 64
+        line3:
+          type: string
+          minLength: 0
+          maxLength: 64            
+        city:
+          type: string
+        county:
+          type: string
+        state-code:
+          type: string
+        state-name:
+          type: string
+        country:
+          type: string
+        postal-code:
+          type: string
+    addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/address"
+    phone:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        phone-number:
+          type: string
+    phones:
+      type: array
+      items:
+        $ref: "#/components/schemas/phone"
+    email-address:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+    email-addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/email-address"
+    fax:
+      type: object
+      additionalProperties: false
+      properties:
+        fax-number:
+          type: string
+        fax-type:
+          type: string
+    fax-list:
+      type: array
+      items:
+        $ref: "#/components/schemas/fax"
+    super-business-entity:
+      type: object
+      additionalProperties: false
+      properties:
+        ids:
+          $ref: "#/components/schemas/master-keys"
+        related-entity-ids:
+          $ref: "#/components/schemas/related-entity-ids-type"
+    master-key:
+      type: object
+      additionalProperties: false
+      properties:
+        guid:
+          type: string
+        type:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        sources:
+          $ref: "#/components/schemas/sources"
+    master-keys:
+      type: array
+      items:
+        $ref: "#/components/schemas/master-key"
+    related-entity-ids-type:
+      type: array
+      items:
+        $ref: "#/components/schemas/related-entity-id-type"
+    related-entity-id-type:
+      type: object
+      additionalProperties: false
+      properties:
+        guid:
+          type: string
+        type:
+          type: string 
+    source:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        keys:
+          $ref: "#/components/schemas/fields"
+    sources:
+      type: array
+      items:
+        $ref: "#/components/schemas/source"
+    field:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - boolean
+            - integer
+            - number
+            - percentage
+            - currency
+            - date-only
+            - time-only
+            - datetime
+            - string
+            - base64encoded
+        name:
+          type: string
+        string-value:
+          type: string
+    fields:
+      type: array
+      items:
+        $ref: "#/components/schemas/field"
+    
+  ### --- Requests --- ###
+  ## requestBodies:
+  ### --- Requests --- ###
+  requestBodies:
+    create-remarks:
+      description: A JSON object containing claim request
+      required: true
+      content:
+        application/json:
+            schema:
+              $ref: '#/components/schemas/create-remark' 
+    update-account-request:
+      description: A JSON object containing account remarks request
+      required: true
+      content:
+        application/json:
+            schema:
+              $ref: '#/components/schemas/update-account'                
+  responses:
+    only-metadata-responses:
+      description: 'Used for /health resource and for all faults.'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+        application/xml:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+    accounts-summary-response:
+      description: 'Account entity response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  accounts:
+                    $ref: "#/components/schemas/summaries"
+    accounts-response:
+      description: 'Account entity response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  accounts:
+                    $ref: "#/components/schemas/accounts"                   
+    update-account-response:
+      description: 'Update account response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  account:
+                       $ref: "#/components/schemas/update-account-message"     
+    account-response:
+      description: 'Account entity response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  accounts:
+                    $ref: "#/components/schemas/accounts-details"                                       
+    members-response:
+      description: 'Members response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  members:
+                    $ref: "#/components/schemas/account-members"
+    persons-response:
+      description: 'Persons response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  persons:
+                    $ref: "#/components/schemas/account-persons"                    
+    otp-history-response:
+      description: 'otp-history response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  otp-histories:
+                    $ref: "#/components/schemas/account-otp-histories"
+    remarks-response:
+      description: 'Remarks response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  remark:
+                       $ref: "#/components/schemas/remarks"
+    create-remarks-response:
+      description: 'Remarks response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  remark:
+                       $ref: "#/components/schemas/create-remark-message"
+    rerate-response:
+      description: 'rerate response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  rerates:
+                    $ref: "#/components/schemas/rerates"
+    invoice-response:
+      description: 'invoice response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  invoices:
+                    $ref: "#/components/schemas/invoices"                    
+    invoice-details-response:
+      description: 'invoice details response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  invoices:
+                    $ref: "#/components/schemas/invoice-details"                                        
+    exception-response:
+      description: 'exception response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  exceptions:
+                    $ref: "#/components/schemas/exceptions"                                        
+    enhanced-billing-modes-response:
+      description: 'enhanced-billing-modes response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  enhanced-billing-modes:
+                    $ref: "#/components/schemas/enhanced-billing-modes"                                                            
+    lobs-response:
+      description: 'lobs response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  lineOf-businesses:
+                    $ref: "#/components/schemas/lobs"                                                                                
+    suspense-response:
+      description: 'suspense response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  suspenses:
+                    $ref: "#/components/schemas/suspenses"                                                                                
+    correspondences-response:
+      description: 'correspondences response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  correspondences:
+                    $ref: "#/components/schemas/correspondences"                                                                           
+    suspense-detail-response:
+      description: 'suspense detail response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  suspenses:
+                    $ref: "#/components/schemas/suspenses"                                                                                
+    maintenance-histories-response:
+      description: 'maintenance histories response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  maintenance-histories:
+                    $ref: "#/components/schemas/maintenance-histories"                                        
+    sub-accounts-response:
+      description: 'sub accounts response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  sub-accounts:
+                    $ref: "#/components/schemas/sub-accounts"                                                            
+  parameters:
+    aflac-correlation-id:
+      name: aflac-correlation-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      name: aflac-transaction-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-openid-token:
+      name: aflac-openid-token
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      in: header
+      name: aflac-consumer-id
+      schema:
+        type: string
+      required: false
+    aflac-business-event:
+      in: header
+      name: aflac-business-event
+      schema:
+        type: string
+      required: false
+    page-number:
+      name: page-number
+      in: query
+      schema:
+        type: integer
+      required: false
+    page-size:
+      name: page-size
+      in: query
+      schema:
+        type: integer
+      required: false
+    sort-by:
+      name: sort-by
+      in: query
+      description:  sort by
+      required: false
+      schema:
+        type: string
+    sort-order:
+      name: sort-order
+      in: query
+      description:  sort by
+      required: false
+      schema:
+        type: string     
+    company-number:
+      name: company-number
+      in: query
+      schema:
+        type: string
+      required: true
+    requested-by:
+      name: requested-by
+      in: query
+      schema:
+        type: string
+      required: true            
+    outstanding-flag:
+      name: outstanding-flag
+      in: query
+      schema:
+        type: string
+      required: false 
+    policy-number:
+      name: policy-number
+      in: query
+      schema:
+        type: string
+      required: true   
+    department-number:
+      name: department-number
+      in: query
+      schema:
+        type: string
+      required: false   
+    employee-number:
+      name: employee-number
+      in: query
+      schema:
+        type: string
+      required: false   
+    insured-name:
+      name: insured-name
+      in: query
+      schema:
+        type: string
+      required: false  
+    pended-policiesonly:
+      name: pended-policiesonly
+      in: query
+      schema:
+        type: string
+      required: false         
+    account-number:
+      in: path
+      name: account-number
+      schema:
+        type: string
+      required: true
+    invoice-number:
+      in: path
+      name: invoice-number
+      schema:
+        type: string
+      required: true      
+    suspense-number:
+      in: path
+      name: suspense-number
+      schema:
+        type: string
+      required: true      
+    account-id:
+      in: query
+      name: account-number
+      schema:
+        type: string
+      required: false
+    tax-id:
+      in: query
+      name: tax-id
+      schema:
+        type: string
+      required: false
+    writing-number:
+      in: query
+      name: writing-number
+      schema:
+        type: string
+      required: false
+    zip:
+      in: query
+      name: zip
+      schema:
+        type: string
+      required: false       
+    state:
+      in: query
+      name: state
+      schema:
+        type: string
+      required: false 
+    pocname:
+      in: query
+      name: pocname
+      schema:
+        type: string
+      required: false
+    city:
+      in: query
+      name: city
+      schema:
+        type: string
+      required: false     
+    account-name:
+      in: query
+      name: account-name
+      schema:
+        type: string
+      required: false
+    no-of-invoices:
+      in: query
+      name: no-of-invoices
+      schema:
+        type: integer
+      required: true
+    account-status:
+      in: query
+      name: account-status
+      schema:
+        type: string
+      required: false
+    first-name:
+      in: query
+      name: first-name
+      schema:
+        type: string
+      required: false
+    last-name:
+      in: query
+      name: last-name
+      schema:
+        type: string
+      required: false
+    ssn:
+      in: query
+      name: ssn
+      schema:
+        type: string
+      required: false      
+    remark-type:
+      in: query
+      name: account-status
+      schema:
+        type: string
+        enum:
+          - account
+      required: false

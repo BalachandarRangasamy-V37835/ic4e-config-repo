@@ -1,0 +1,868 @@
+openapi: 3.0.0
+info:
+  version: v1
+  title: p-insured-management
+  description: Process Layer API for insured business entity
+paths:
+  /health:
+    get:
+      operationId: GET /health
+      responses:
+        '200': 
+          $ref: '#/components/responses/only-metadata-responses'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+  /insureds:
+    get:
+      operationId: GET /insureds
+      parameters:
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-business-event"
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: "#/components/parameters/policy-number"
+        - $ref: "#/components/parameters/ssn"
+        - $ref: "#/components/parameters/dob"
+        - $ref: "#/components/parameters/zip"
+        - $ref: "#/components/parameters/arg-member-number"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+      responses:
+        "200":
+          $ref: "#/components/responses/get-insureds-response"
+        "4XX":
+          $ref: "#/components/responses/only-metadata-responses"
+        "5XX":
+          $ref: "#/components/responses/only-metadata-responses" 
+      description: This meathod is to search for lead and responds back with lead details. 
+  /insureds/{insured-id}:
+    parameters:
+      - name: insured-id
+        description: insured-id
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /leads/{insured-id}
+      description: This meathod returns the details of a specific insured identified by GlobalID/GUID.
+      parameters:
+        - $ref: '#/components/parameters/insured-id'
+        - $ref: '#/components/parameters/aflac-openid-token'
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+      responses:
+        '200': 
+          $ref: '#/components/responses/get-insureds-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+    patch:
+      operationId: patch /insureds/{insured-id}
+      description: updates insured based input passed.
+      requestBody:
+        $ref: '#/components/requestBodies/insureds-request'
+      responses:
+        '200':
+          $ref: '#/components/responses/insureds-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/company-number'                     
+    delete:
+        responses:
+          '200':
+            $ref: '#/components/responses/delete-profile-response'
+          '4XX':
+            $ref: '#/components/responses/only-metadata-responses'
+          '5XX':
+            $ref: '#/components/responses/only-metadata-responses'
+        operationId: DELETE /{insured-id}
+        parameters:
+          - $ref: "#/components/parameters/aflac-business-event"
+          - $ref: '#/components/parameters/aflac-correlation-id'
+          - $ref: '#/components/parameters/aflac-transaction-id'
+          - $ref: '#/components/parameters/company-number' 
+
+  /insureds/{insured-id}/indicators:
+    get:
+        responses:
+          '200':
+            $ref: '#/components/responses/indicators-response'
+          '4XX':
+            $ref: '#/components/responses/only-metadata-responses'
+          '5XX':
+            $ref: '#/components/responses/only-metadata-responses'
+        operationId: GET /insureds/{insured-id}/indicators
+        parameters:
+          - $ref: "#/components/parameters/aflac-business-event"
+          - $ref: '#/components/parameters/company-number'
+          - $ref: '#/components/parameters/aflac-correlation-id'
+          - $ref: '#/components/parameters/aflac-transaction-id'
+          - $ref: '#/components/parameters/insured-id'
+components:
+  headers:
+    aflac-correlation-id:
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      required: false
+      schema:
+        type: string
+    aflac-business-event:
+      required: false
+      schema:
+        type: string
+  schemas:
+    insured-request-payload:
+      type: object
+      properties:  
+        channel-source: 
+          type: object
+          properties: 
+            channel-name: 
+              type: string
+              example: Phone
+            user-type: 
+              type: string
+              example: CallCenter
+            transaction-initiation-time: 
+              type: string
+              example: 2020-02-17T04:52:00
+            user-id: 
+              type: string
+              example: AKH
+        insured: 
+          type: object
+          properties: 
+            name: 
+              type: object
+              properties: 
+                first-name: 
+                  type: string
+                  example: YASMINE
+                last-name: 
+                  type: string
+                  example: BOGIE
+                full-name: 
+                  type: string
+                  example: YASMINE BOGIE
+            person-contact-information: 
+              type: object
+              properties: 
+                phones: 
+                  type: array
+                  items: 
+                    type: object
+                    properties: 
+                      context: 
+                        type: string
+                        example: home
+                      phone-number: 
+                        type: string
+                        example: 6194097783
+                addresses: 
+                  type: array
+                  items: 
+                    type: object
+                    properties: 
+                      context: 
+                        type: string
+                        example: home
+                      line1: 
+                        type: string
+                        example: PO BOX 309
+                      city: 
+                        type: string
+                        example: CAYUCOS
+                      state-code: 
+                        type: string
+                        example: CA
+                      country: 
+                        type: string
+                        example: USA
+                      postal-code: 
+                        type: string
+                        example: 93430
+                emails: 
+                  type: array
+                  items: 
+                    type: object
+                    properties: 
+                      context: 
+                        type: string
+                        example: home
+                      full-address: 
+                        type: string
+                        example: TEST@OUTLOOK.COM
+            gender: 
+              type: string
+              example: male
+            date-of-birth: 
+              type: string
+              format: date
+              example: 1987-11-04
+            social-security-number: 
+              type: object
+              properties: 
+                string-value: 
+                  type: string
+                  example: i2Lu6Sm28
+                sensitivity-state: 
+                  type: string
+                  example: tokenized
+                type: 
+                  type: string
+                  example: string
+                is-sensitive: 
+                  type: boolean
+
+    transactions:
+      type: object
+      properties:
+        insured:
+          type: object
+          properties:
+            transaction-id:
+              type: string
+              example: 01785888-B63B-6179-1090-00000000033  
+    code-description: 
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        type:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        code:
+          type: string
+        short-description:
+          type: string
+        long-description:
+          type: string
+    code-descriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/code-description"
+    pagination-info:
+      type: object
+      additionalProperties: false
+      properties:
+        page-number:
+          type: integer
+        page-size:
+          type: integer
+        total-item-count:
+          type: integer
+    aflac-response-metadata:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+    
+    aflac-response-metadata-without-pagination-info:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+          
+    only-metadata-responses:
+      type: object
+      additionalProperties: false
+      properties:
+        metadata:
+          $ref: '#/components/schemas/aflac-response-metadata'
+          
+    aflac-metadata-without-pagination-info-response:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: '#/components/schemas/code-descriptions'            
+    insureds-response-type:
+      type: object
+      additionalProperties: false
+      properties:
+        insureds:
+          $ref: "#/components/schemas/insureds"
+    insured:
+      allOf:
+        - $ref: "#/components/schemas/person"
+        - type: object
+          additionalProperties: false
+    insureds:
+      type: array
+      items:
+        $ref: "#/components/schemas/insured"
+    person:
+      allOf:
+        - $ref: "#/components/schemas/super-business-entity"
+        - type: object
+          additionalProperties: false
+          properties:
+            name:
+              $ref: "#/components/schemas/person-name"
+            person-contact-information:
+              $ref: "#/components/schemas/contact-information"
+            gender:
+              type: string
+              enum:
+                - male
+                - female
+                - unknown
+            date-of-birth:
+              type: string
+              format: date
+              example: "2021-03-25"
+            social-security-number:
+              type: string
+    person-name:
+      type: object
+      additionalProperties: false
+      properties:
+        first-name:
+          type: string
+        middle-name:
+          type: string
+        last-name:
+          type: string
+        full-name:
+          type: string
+    contact-information:
+      type: object
+      additionalProperties: false
+      properties:
+        addresses:
+          $ref: "#/components/schemas/addresses"
+        phones:
+          $ref: "#/components/schemas/phones"
+        emails:
+          $ref: "#/components/schemas/email-addresses"
+    address:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        line1:
+          type: string
+          minLength: 0
+          maxLength: 64
+        line2:
+          type: string
+          minLength: 0
+          maxLength: 64
+        city:
+          type: string
+        county:
+          type: string
+        state-code:
+          type: string
+        state-name:
+          type: string
+        country:
+          type: string
+        postal-code:
+          type: string
+    addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/address"
+    phone:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        phone-number:
+          type: string
+    phones:
+      type: array
+      items:
+        $ref: "#/components/schemas/phone"
+    email-address:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        full-address:
+          type: string
+    email-addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/email-address"
+    super-business-entity:
+      type: object
+      additionalProperties: false
+      properties:
+        ids:
+          $ref: "#/components/schemas/master-keys"
+        related-entity-ids:
+          $ref: "#/components/schemas/related-entity-ids-type"
+    master-key:
+      type: object
+      additionalProperties: false
+      properties:
+        guid:
+          type: string
+        type:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        sources:
+          $ref: "#/components/schemas/sources"
+    master-keys:
+      type: array
+      items:
+        $ref: "#/components/schemas/master-key"
+    related-entity-ids-type:
+      type: array
+      items:
+        $ref: "#/components/schemas/related-entity-id-type"
+    related-entity-id-type:
+      type: object
+      additionalProperties: false
+      properties:
+        guid:
+          type: string
+        type:
+          type: string 
+    source:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        keys:
+          $ref: "#/components/schemas/fields"
+    sources:
+      type: array
+      items:
+        $ref: "#/components/schemas/source"
+    field:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - boolean
+            - integer
+            - number
+            - percentage
+            - currency
+            - date-only
+            - time-only
+            - datetime
+            - string
+            - base64encoded
+        name:
+          type: string
+        string-value:
+          type: string
+    fields:
+      type: array
+      items:
+        $ref: "#/components/schemas/field"
+    update-contact-info:
+      type: object
+      properties:
+        update-contact-info-response:
+          type: object
+          properties:
+            transaction-id:
+              type: string
+    delete-profile:
+      type: object
+      properties:
+        message:
+          type: string          
+    call-center-histories:
+      type: object
+      properties:
+        call-center-history:
+          type: array
+          items:
+            $ref: '#/components/schemas/call-center-history'
+    indicators:
+      type: object
+      properties:
+        indicators:
+          type: array
+          items:
+             $ref: '#/components/schemas/indicator'               
+    indicator:
+        type: object
+        properties: 
+          value: 
+            type: boolean
+          key: 
+            type: string
+            enum:
+            - direct-deposit-indicator
+            - critical-legal-remarks-indicator
+            - activeIRES-escalation-indicator
+            - outstanding-claims-indicator
+            - registered-for-smart-claims-indicator
+            - outstanding-PSW-file-idicator
+            - payment-due-indicator
+            - cpr-indicator
+          
+    call-center-history:
+        type: object
+        properties: 
+          tracking-number: 
+            type: string
+          log-date: 
+            type: string
+          caller-name: 
+            type: string
+          caller-type: 
+            type: string
+          relation-ship: 
+            type: string
+          employee-id: 
+            type: string
+          tracking-status: 
+            type: string
+          comments: 
+            type: string
+          call-reasons: 
+            type: string
+          routing-reasons: 
+            type: string
+          destinations: 
+            type: string
+    update-contact:
+      additionalProperties: false
+      type: object
+      required:
+       - customer-number
+       - company-number
+      properties:
+        policy-holder-data: 
+          type: object
+          required:
+            - customer-number
+            - company-number
+          properties: 
+            company-number: 
+              type: string
+            customer-number: 
+              type: integer
+              format: int32
+        common-transaction-data: 
+          type: object
+          required:
+            - user-id
+            - user-type
+            - channel-name
+            - transaction-initiation-time
+          properties: 
+            channel-name: 
+              type: string
+            user-type: 
+              type: string
+            transaction-initiation-time: 
+              type: string
+            user-id: 
+              type: string
+            transaction-id: 
+              type: string
+            triggering-transaction-id: 
+              type: string
+            correlation-data: 
+              type: object
+              required:
+               - company-number
+              properties: 
+                company-number: 
+                  type: string
+                policy-number: 
+                  type: string
+                  format: nullable
+                associate-number: 
+                  type: string
+                  format: nullable
+                claim-number: 
+                  type: string
+                  format: nullable
+                account-number: 
+                  type: string
+                customer-number: 
+                  type: string
+                invoice-number: 
+                  type: string
+                invoiceline-number: 
+                  type: string
+  ### --- Requests --- ###
+  requestBodies:
+    insureds-request:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/insured-request-payload'  
+  responses:
+    only-metadata-responses:
+      description: 'Used for /health resource and for all faults.'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/only-metadata-responses'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/only-metadata-responses'
+            
+    only-metadata-responses-without-pagination-info:
+      description: Health response without pagination-info
+      headers:
+        aflac-correlation-id:
+          $ref: '#/components/headers/aflac-correlation-id'
+        aflac-transaction-id:
+          $ref: '#/components/headers/aflac-transaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              #/components/schemas/aflac-metadata-without-pagination-info-response
+        application/xml:
+          schema:
+            $ref: >-
+              #/components/schemas/aflac-metadata-without-pagination-info-response
+              
+    get-insureds-response:
+      description: 'get insureds response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/insureds-response-type'
+            type: object
+    insureds-response:
+      description: Insured  Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/transactions'
+            type: object
+            
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string                                     
+    delete-profile-response:
+      description: Delete Profile Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/delete-profile'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string            
+    call-center-history-response:
+      description: Call Center History Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/call-center-histories'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string        
+    indicators-response:
+      description:  Indicators Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/indicators'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string                    
+            
+  parameters:
+    aflac-correlation-id:
+      name: aflac-correlation-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      name: aflac-transaction-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-openid-token:
+      name: aflac-openid-token
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      in: header
+      name: aflac-consumer-id
+      schema:
+        type: string
+      required: false
+    aflac-business-event:
+      in: header
+      name: aflac-business-event
+      schema:
+        type: string
+      required: false
+    insured-id:
+      in: path
+      name: insured-id
+      schema:
+        type: string
+      required: true
+    policy-number:
+     in: query
+     name: policy-number
+     required: false
+     schema:
+      type: string
+    dob:
+     in: query
+     name: dob
+     description: the dob should be in the fomat "yyyy-mm-dd"
+     required: false
+     schema:
+      type: string
+      format: date
+    ssn:
+     in: query
+     name: ssn
+     description: the ssn should be sent encrypted. Using a-cipher /protect resource ssn can be encrypted.
+     required: false
+     schema:
+      type: integer
+    zip:
+     in: query
+     name: zip
+     required: false
+     schema:
+      type: string
+    arg-member-number:
+     in: query
+     name: arg-member-number
+     required: false
+     schema:
+      type: string      
+    page-number:
+      name: page-number
+      in: query
+      schema:
+        type: integer
+      required: false
+    page-size:
+      name: page-size
+      in: query
+      schema:
+        type: integer
+      required: false
+    company-number:
+      name: company-number
+      in: query
+      schema:
+        type: string
+      required: true

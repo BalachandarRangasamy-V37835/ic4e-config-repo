@@ -1,0 +1,514 @@
+openapi: 3.0.0
+info:
+  title: 'p-provider-management-v1'
+  version: v1
+  description: 'Process  API for p-provider-management Setup & Maintenance'
+paths:
+  /health:
+    get:
+      operationId: GET /health
+      responses:
+        '200': 
+          $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+        '4XX':
+          $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+        '5XX':
+          $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+  /providers:
+    get:
+        responses:
+          '200':
+            $ref: '#/components/responses/provider-response'
+          '4XX':
+            $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+          '5XX':
+            $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+        operationId: GET /providers
+        parameters:
+          - $ref: "#/components/parameters/aflac-business-event"
+          - $ref: '#/components/parameters/npi-number'
+          - $ref: '#/components/parameters/first-name'
+          - $ref: '#/components/parameters/last-name'
+          - $ref: '#/components/parameters/tax-id'
+          - $ref: '#/components/parameters/tax-id-code'   
+          - $ref: '#/components/parameters/zip-code' 
+          - $ref: '#/components/parameters/site-id'  
+          - $ref: '#/components/parameters/initial' 
+          - $ref: '#/components/parameters/sequence-number'
+          - $ref: '#/components/parameters/page-number'
+          - $ref: '#/components/parameters/page-size'
+          - $ref: '#/components/parameters/company-numbers'
+          - $ref: '#/components/parameters/aflac-correlation-id'
+          - $ref: '#/components/parameters/aflac-transaction-id'
+          - $ref: "#/components/parameters/aflac-openid-token"      
+  /providers/{provider-number}/checks:
+    parameters:
+      - name: provider-number
+        description: cinsured-id
+        in: path
+        schema:
+          type: string
+        required: true  
+    get:
+        responses:
+          '200':
+            $ref: '#/components/responses/provider-checks-response'
+          '4XX':
+            $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+          '5XX':
+            $ref: '#/components/responses/aflac-metadata-without-pagination-info-response'
+        operationId: GET /providers/{provider-number}/checks
+        parameters:
+          - $ref: "#/components/parameters/wwhq-claims"
+          - $ref: "#/components/parameters/page-number"
+          - $ref: "#/components/parameters/page-size"
+          - $ref: "#/components/parameters/company-number"
+          - $ref: "#/components/parameters/aflac-openid-token"
+          - $ref: "#/components/parameters/aflac-business-event"
+          - $ref: "#/components/parameters/aflac-correlation-id"
+          - $ref: "#/components/parameters/aflac-transaction-id"        
+components:
+  schemas:
+    contact-information:
+      type: object
+      additionalProperties: false
+      properties:
+        addresses:
+          $ref: "#/components/schemas/addresses"
+        phones:
+          $ref: "#/components/schemas/phones"
+        emails:
+          $ref: "#/components/schemas/email-addresses"
+        fax-list:
+          $ref: "#/components/schemas/fax-list"
+    address:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        line1:
+          type: string
+          minLength: 0
+          maxLength: 64
+        line2:
+          type: string
+          minLength: 0
+          maxLength: 64
+        line3:
+          type: string
+          minLength: 0
+          maxLength: 64
+        city:
+          type: string
+        county:
+          type: string
+        state-code:
+          type: string
+        state-name:
+          type: string
+        country:
+          type: string
+        postal-code:
+          type: string
+    addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/address"
+    phone:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        phone-number:
+          type: string
+    phones:
+      type: array
+      items:
+        $ref: "#/components/schemas/phone"
+    email-address:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        full-address:
+          type: string
+    email-addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/email-address"
+    fax:
+      type: object
+      additionalProperties: false
+      properties:
+        fax-number:
+          type: string
+        fax-type:
+          type: string
+    fax-list:
+      type: array
+      items:
+        $ref: "#/components/schemas/fax"
+    person-name:
+      type: object
+      additionalProperties: false
+      properties:
+        first-name:
+          type: string
+        middle-name:
+          type: string
+        last-name:
+          type: string
+        full-name:
+          type: string
+        salutation:
+          type: string
+        suffix:
+          type: string 
+    code-description: 
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        type:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        code:
+          type: string
+        short-description:
+          type: string
+        long-description:
+          type: string
+    code-descriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/code-description"
+    pagination-info:
+      type: object
+      additionalProperties: false
+      properties:
+        page-number:
+          type: integer
+        page-size:
+          type: integer
+        total-item-count:
+          type: integer
+        has-more-pages:
+          type: boolean
+    aflac-response-metadata:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+        pagination-info:
+          $ref: "#/components/schemas/pagination-info"
+    aflac-metadata-without-pagination-info-response:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+    ### Custom schemas ###
+
+    providers:
+      type: object
+      properties:
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/provider'
+    provider-checks:
+      type: object
+      properties:
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/provider-check'            
+    provider:
+        type: object
+        properties: 
+          tax-id: 
+            type: string
+          name: 
+            $ref: "#/components/schemas/person-name"
+          hipaa-era-req: 
+            type: string
+          sequence-number: 
+            type: string
+          tax-id-code: 
+            type: string
+          contact-information:
+             $ref: "#/components/schemas/contact-information"
+          comments: 
+            type: string
+          site-id: 
+            type: string
+          npi-number: 
+            type: string
+          date-added: 
+            type: string
+          date-updated: 
+            type: string
+          added-by: 
+            type: string
+          updated-by: 
+            type: string
+    provider-check:
+        type: object
+        properties: 
+          provider-number: 
+            type: string
+          sequence-number: 
+            type: string
+          check-number: 
+            type: string
+          check-date: 
+            type: string
+          payee: 
+            $ref: "#/components/schemas/payee"  
+          total-amount: 
+            type: string
+          check-status: 
+            type: string
+          cleared-date: 
+            type: string
+          mailing-agent: 
+            type: string
+          total-backup-withholding: 
+            type: string
+          batch: 
+            type: string
+          void-date: 
+            type: string
+          mail-to: 
+            $ref: "#/components/schemas/mail-to"  
+          check-items: 
+            type: array
+            items:
+              $ref: '#/components/schemas/check-item'
+    payee: 
+      type: object
+      properties: 
+        name:
+           $ref: "#/components/schemas/person-name" 
+        contact-information:
+          $ref: "#/components/schemas/contact-information"       
+    mail-to: 
+      type: object
+      properties: 
+        name:
+           $ref: "#/components/schemas/person-name" 
+        contact-information:
+          $ref: "#/components/schemas/contact-information"             
+    check-item:
+      type: object
+      properties: 
+        claim-number: 
+          type: string
+        insured-name: 
+          type: string
+        amount: 
+          type: string
+        backup-withholding: 
+          type: string
+        patient-number: 
+          type: string             
+  ### --- Responses --- ###
+  responses:
+    aflac-metadata-without-pagination-info-response:
+      description: 'Used for /health resource and for all faults.'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/aflac-metadata-without-pagination-info-response'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/aflac-metadata-without-pagination-info-response'
+    provider-response:
+      description: Providers Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-response-metadata
+              data:
+                $ref: '#/components/schemas/providers'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    provider-checks-response:
+      description: Providers Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-response-metadata
+              data:
+                $ref: '#/components/schemas/provider-checks'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string            
+  ### --- Requests --- ###
+
+  ### --- parameters --- ###
+  parameters:
+    aflac-correlation-id:
+      name: aflac-correlation-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      name: aflac-transaction-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      name: aflac-consumer-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-openid-token:
+      name: aflac-openid-token
+      in: header
+      required: false
+      schema:
+        type: string        
+    aflac-business-event:
+      name: aflac-business-event
+      in: header
+      required: false
+      schema:
+        type: string
+    page-number:
+      name: page-number
+      in: query
+      schema:
+        type: integer
+      required: false
+    page-size:
+      name: page-size
+      in: query
+      schema:
+        type: integer
+      required: false
+    company-number:
+      name: company-number
+      in: query
+      schema:
+        type: string
+      required: true
+    company-numbers:
+      name: company-numbers
+      in: query
+      schema:
+        type: array
+        items:
+          type: string  
+      required: true       
+    wwhq-claims:
+      name: wwhq-claims
+      in: query
+      schema:
+        type: string
+      required: true      
+    npi-number:
+      name: npi-number
+      in: query
+      schema:
+        type: string
+      required: false
+    first-name:
+      name: first-name
+      in: query
+      schema:
+        type: string
+      required: false
+    last-name:
+      name: last-name
+      in: query
+      schema:
+        type: string
+      required: false    
+    tax-id:
+      in: query
+      name: tax-id
+      schema:
+        type: string
+      required: false
+    tax-id-code:
+      in: query
+      name: tax-id-code
+      schema:
+        type: string
+      required: false 
+    zip-code:
+      in: query
+      name: zip-code
+      schema:
+        type: string
+      required: false 
+    site-id:
+      in: query
+      name: site-id
+      schema:
+        type: string
+      required: false
+    initial:
+      in: query
+      name: initial
+      schema:
+        type: string
+      required: false      
+    sequence-number:
+      in: query
+      name: sequence-number
+      schema:
+        type: string
+      required: false   

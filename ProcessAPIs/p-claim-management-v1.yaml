@@ -1,0 +1,1780 @@
+openapi: 3.0.0
+info:
+  title: p-claim-management
+  version: v1
+  description: Process API for p-claim-management Setup & Maintenance
+paths:
+  /health:
+    get:
+      operationId: GET /health
+      responses:
+        '200':
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+  /claims:
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claims-response'
+        4XX:
+          $ref: '#/components/responses/only-metadata-responses-with-pagination'
+        5XX:
+          $ref: '#/components/responses/only-metadata-responses-with-pagination'
+      operationId: GET /claims
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/page-number'
+        - $ref: '#/components/parameters/page-size'
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/policy-numbers'
+        - $ref: '#/components/parameters/insured-id'
+  /claims/{claim-number}/checks:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-checks-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/{claim-number}/checks
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+  /claims-status:
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-status-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/status
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/claim-numbers'
+  /claim-search-options:
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-search-options-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/claim-search-options
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/policy-number'        
+  /claims/{claim-number}:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-detail-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/{claim-number}
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+  /claims/{claim-number}/remarks:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-remarks-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/{claim-number}/remarks
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+  /claims/{claim-number}/ccns:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /claims/{claim-number}/ccns
+      parameters:
+        -  $ref: '#/components/parameters/aflac-correlation-id'
+        -  $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-ccn-list-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+  /claims/{claim-number}/ccns/{ccn-id}:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: ccn-id
+        description: ccn id
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /claims/{claim-number}/ccns/{ccn-id}
+      parameters:
+        -  $ref: '#/components/parameters/aflac-correlation-id'
+        -  $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+        - $ref: '#/components/parameters/sheet-number'
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-ccn-details-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+  /claims/{claim-number}/edi:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /claims/{claim-number}/edi
+      parameters:
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-edi-detail-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+  /claims/{claim-number}/indicators:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/claim-indicators-response'
+        4XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+        5XX:
+          $ref: >-
+            #/components/responses/only-metadata-responses-without-pagination-info
+      operationId: GET /claims/{claim-number}/indicators
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+        - $ref: '#/components/parameters/company-number'
+  /remarks:      
+    post:
+      operationId: POST /remarks
+      description: creates claim-remarks based input passed.
+      requestBody:
+        $ref: '#/components/requestBodies/claim-remarks-request'
+      responses:
+        '201':
+          $ref: '#/components/responses/remarks-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+  /remarks/{claim-number}:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: remark-type
+        description: remark type
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: claim-time-stamp
+        description: timeStamp
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: sheet-number
+        description: sheet Number
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: sequence-number
+        description: sequence number
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: company-number
+        description: companyNumber
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: user-desk-code
+        description: userDeskCode
+        in: query
+        schema:
+          type: string
+        required: false
+    delete:
+      operationId: DELETE /remarks/{claim-number}
+      description: deletes claim-remarks based input passed.
+      responses:
+        '200':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+    patch:
+      operationId: patch /remarks
+      description: updates claim-remarks based input passed.
+      requestBody:
+        $ref: '#/components/requestBodies/claim-remarks-request'
+      responses:
+        '200':
+          $ref: '#/components/responses/remarks-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+  /claims/{claim-number}/polices/remarks:
+    parameters:
+      - name: claim-number
+        description: claim number
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: policy-number
+        description: policy number
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: policy-time-stamp
+        description: policy number
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: sequence-number
+        description: sequence number
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: company-number
+        description: companyNumber
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: user-log-on
+        description: userDeskCode
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: remark-type
+        description: remark type
+        in: query
+        schema:
+          type: string
+        required: false
+      
+    post:
+      operationId: POST /claims/{claim-number}/polices/remarks
+      description: creates plocy-remarks based input passed.
+      requestBody:
+        $ref: '#/components/requestBodies/policy-remarks-request'
+      responses:
+        '201':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'
+    patch:
+      operationId: patch /claims/{claim-number}/polices/remarks
+      description: updates plocy-remarks based input passed.
+      requestBody:
+        $ref: '#/components/requestBodies/policy-remarks-request'
+      responses:
+        '200':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        - $ref: '#/components/parameters/aflac-business-event'  
+    delete:
+      operationId: DELETE /claims/{claim-number}/polices/remarks
+      description: deletes claim-remarks based input passed.
+      responses:
+        '200':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses-without-pagination-info'
+      parameters:
+        - $ref: '#/components/parameters/aflac-correlation-id'
+        - $ref: '#/components/parameters/aflac-transaction-id'
+        - $ref: '#/components/parameters/aflac-consumer-id'
+        
+   
+components:
+  parameters:
+    aflac-correlation-id:
+      name: aflac-correlation-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      name: aflac-transaction-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      name: aflac-consumer-id
+      in: header
+      required: false
+      schema:
+        type: string
+    aflac-business-event:
+      name: aflac-business-event
+      in: header
+      required: false
+      schema:
+        type: string
+    page-number:
+      name: page-number
+      in: query
+      schema:
+        type: integer
+      required: false
+    sheet-number:
+      name: sheet-number
+      in: query
+      schema:
+        type: integer
+      required: false   
+    page-size:
+      name: page-size
+      in: query
+      schema:
+        type: integer
+      required: false
+    company-number:
+      name: company-number
+      in: query
+      schema:
+        type: string
+      required: true
+    claim-number:
+      name: claim-number
+      in: query
+      schema:
+        type: string
+      required: false
+    policy-number:
+      name: policy-number
+      description: To filter the required response based on policy-number
+      in: query
+      schema:
+        type: string
+      required: true
+    policy-numbers:
+      name: policy-number
+      description: To filter the required response based on policy-number
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      required: false
+    claim-numbers:
+      name: claim-numbers
+      description: To filter the required response based on  claim-numbers
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      required: true
+    insured-id:
+      in: query
+      name: insured-id
+      description: To filter the required response based on insured-id
+      required: false
+      schema:
+        type: integer
+  headers:
+    aflac-correlation-id:
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      required: false
+      schema:
+        type: string
+    aflac-business-event:
+      required: false
+      schema:
+        type: string
+  schemas:
+    code-description:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        type:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        code:
+          type: string
+        short-description:
+          type: string
+        long-description:
+          type: string
+    claim-remarks-request:
+      type: object
+      additionalProperties: false
+      properties:
+        remark-type:
+          type: string
+        claim-number:
+          type: string
+        sheet-number:
+          type: string
+        user-logon:
+          type: string
+        sequence-number:
+          type: string
+        user-desk-credentials:
+          type: string
+        critical-indicator:
+          type: string
+        summary:
+          type: string
+        company-number:
+          type: string
+        message-id:
+          type: string
+        claim-time-stamp:
+          type: string
+    policy-remarks-request:
+      type: object
+      additionalProperties: false
+      properties:
+        policyNumber:
+          type: string
+        companyNumber:
+          type: string
+        criticalIndicator:
+          type: string
+        deskcode:
+          type: string
+        remark:
+          type: string
+        employeeid:
+          type: string
+        sequenceNumber:
+          type: string
+    claim-remarks-request-payload:
+      type: array
+      items:
+        $ref: '#/components/schemas/claim-remarks-request'
+    policy-remarks-request-payload:
+      type: array
+      items:
+        $ref: '#/components/schemas/policy-remarks-request'
+    code-descriptions:
+      type: array
+      items:
+        $ref: '#/components/schemas/code-description'
+    pagination-info:
+      type: object
+      additionalProperties: false
+      properties:
+        page-number:
+          type: integer
+        page-size:
+          type: integer
+        total-item-count:
+          type: integer
+        has-more-pages:
+          type: boolean
+    aflac-response-metadata:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: '#/components/schemas/code-descriptions'
+        pagination-info:
+          $ref: '#/components/schemas/pagination-info'
+    aflac-metadata-without-pagination-info-response:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: '#/components/schemas/code-descriptions'
+    claim-remarks:
+      type: object
+      properties:
+        claim-remarks:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim-remark'
+    claim-remark:
+      type: object
+      properties:
+        remarks-date:
+          type: string
+          format: date
+        remarks-added-by:
+          type: string
+        disclosure-ind:
+          type: string
+        purpose:
+          type: string
+        remark-type:
+          type: string
+        iscritical:
+          type: boolean
+        name:
+          type: string
+        address-line1:
+          type: string
+        address-line2:
+          type: string
+        address-line3:
+          type: string
+        address-line4:
+          type: string
+        number:
+          type: string
+        remarks:
+          type: string
+        state:
+          type: string
+        sequence-number:
+          type: number
+        user-logon:
+          type: string
+    claim-checks:
+      type: object
+      properties:
+        claim-checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim-check'
+    claim-check:
+      type: object
+      properties:
+        status:
+          type: string
+        claim-number:
+          type: string
+        activity-date:
+          type: string
+        mail-to-name:
+          type: string
+        payee-addresses:
+          type: object
+          additionalProperties: false
+          properties:
+            address-line1:
+              type: string
+            address-line2:
+              type: string
+            address-line3:
+              type: string
+            address-line4:
+              type: string
+        void-date:
+          type: string
+        amount:
+          type: string
+        opcode:
+          type: string
+        mail-to-address:
+          type: object
+          additionalProperties: false
+          properties:
+            address-line1:
+              type: string
+            address-line2:
+              type: string
+            address-line3:
+              type: string
+            address-line4:
+              type: string
+        check-number:
+          type: string
+        bor-w:
+          type: string
+        cleared-date:
+          type: string
+        batch:
+          type: string
+        return-reason:
+          type: string
+        check-date:
+          type: string
+        payee:
+          type: string
+        mailing-agent:
+          type: string
+    claim-statuses:
+      type: object
+      properties:
+        claim-status-list:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim-status'
+    claim-status:
+      type: object
+      properties:
+        claim-number:
+          type: string
+        pended-sheet-count:
+          type: integer
+        total-sheet-count:
+          type: integer
+        paid-sheet-count:
+          type: integer
+        denied-sheet-count:
+          type: integer
+    claim-search-option:
+      type: object
+      properties:
+        claim-search-options:
+          type: object
+          properties:
+            search-options:
+              type: array
+              items:
+                $ref: '#/components/schemas/search-option'
+            group-values:
+              additionalProperties: false
+              type: object
+              properties: null
+              group-values:
+                type: array
+              items: null
+              $ref: '#/components/schemas/group-value'
+    search-option:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+                type: object
+                properties:
+                  child:
+                    type: string  
+        key:
+          type: string
+    group-value:
+      type: object
+      properties:
+        values:
+          type: string
+        key:
+          type: string     
+    claim-ccn-list:
+      type: object
+      properties:
+        claim-ccn-list:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim-ccn'
+    claim-ccn:
+      type: object
+      properties:
+        provider-id: 
+          type: string
+        aflac-ded: 
+          type: string
+        edos: 
+          type: string
+        claim-control-number: 
+          type: string
+        approved: 
+          type: string
+        medicare-ded: 
+          type: string
+        sheet-number: 
+          type: string
+        aflac-paid: 
+          type: string
+        process-stamped-date: 
+          type: string
+        part: 
+          type: string
+        bdos: 
+          type: string
+        billed: 
+          type: string
+        assc: 
+          type: string
+        medicare-assgn: 
+          type: string 
+        
+    claim-ccn-detail:
+      type: object
+      properties:
+        claim-ccn-detail:
+          type: object
+          properties:
+            payment-note:
+              type: array
+              items:
+                $ref: '#/components/schemas/payment-note'
+            insured-paid:
+              type: number
+            misc-paid:
+              type: number
+            date-claim-paid:
+              type: string
+              format: date
+            medicare-ded:
+              type: number
+            benefits:
+              additionalProperties: false
+              type: object
+              properties: null
+              benefits:
+                type: array
+              items: null
+              $ref: '#/components/schemas/benfits'
+            aflac-paid:
+              type: number
+            process-stamped-date:
+              type: string
+              format: date
+            status-description:
+              type: string
+            user-logon:
+              type: string
+            billed:
+              type: number
+            medicare-assgn:
+              type: string
+            days-charged:
+              type: number
+            aflac-ded:
+              type: number
+            claim-control-number:
+              type: string
+            approved:
+              type: number
+            estate-paid:
+              type: number
+            units:
+              type: number
+            provider:
+              additionalProperties: false
+              type: object
+              properties: null
+              provider:
+                type: array
+              items: null
+              $ref: '#/components/schemas/provide'
+            provider-paid:
+              type: number
+            part:
+              type: string
+            patient-id:
+              type: string
+            bdos:
+              type: string
+            date-of-service:
+              type: string
+            assc:
+              type: string
+            medicare-gap-code:
+              type: number
+            edi-information:
+              additionalProperties: false
+              type: object
+              properties: null
+              provider:
+                type: array
+              items: null
+              $ref: '#/components/schemas/edi-info'
+            edos:
+              type: string
+    payment-note:
+      type: object
+      properties:
+        note:
+          type: string
+        code:
+          type: string
+    benfits:
+      type: array
+      items:
+        type: object
+        properties:
+          aflac-ded:
+            type: string
+          approved:
+            type: string
+          audit-trail-notes:
+            type: string
+          billed:
+            type: string
+          aflac-paid:
+            type: string
+          payee:
+            type: string
+          treatment-date:
+            type: string
+          units:
+            type: string
+          provider:
+            type: string
+    provide:
+      type: object
+      properties:
+        provider-number:
+          type: string
+        phone-number:
+          type: string
+        name:
+          type: object
+          properties:
+            last:
+              type: string
+            first:
+              type: string
+            middle:
+              type: string
+    edi-info:
+      type: object
+      properties:
+        sender-id:
+          type: string
+        sender-name:
+          type: string
+        ph-name:
+          type: string
+        ph-addr1:
+          type: string
+        ph-addr2:
+          type: string
+        ph-addr3:
+          type: string
+        ph-addr4:
+          type: string
+        bp-name:
+          type: string
+        bp-addr1:
+          type: string
+        bp-addr2:
+          type: string
+        bp-addr3:
+          type: string
+        bp-addr4:
+          type: string
+    claim-edi-detail:
+      type: object
+      properties:
+        patient-information:
+          type: object
+          properties:
+            date-of-birth:
+              type: string
+            relationship:
+              type: string
+            sex:
+              type: string
+            patient-name:
+              type: object
+              properties:
+                middle-initial:
+                 type: string
+                first-name:
+                 type: string
+                last-name:
+                 type: string     
+            student-flag:
+              type: boolean
+            ssn:
+              type: string
+        missing-teeth:
+          type: object
+          properties:
+            temporary:
+              type: string
+            permanent:
+              type: string
+        services:
+              type: array
+              items:
+                $ref: '#/components/schemas/service-detail'
+        general-information:
+          type: object
+          properties:
+            policy-holder-name:
+              type: object
+              properties:
+                middle-initial:
+                 type: string
+                first-name:
+                 type: string
+                last-name:
+                 type: string     
+            group-name:
+              type: string
+            address:
+              type: object
+              properties:
+                state:
+                 type: string
+                zipcode:
+                 type: string
+                city:
+                 type: string 
+                line1:
+                 type: string
+                line2:
+                 type: string 
+            policy-number:
+              type: string
+            ortho:
+              type: string
+            group-number:
+              type: string
+            date-recieved:
+              type: string
+            payee:
+              type: string
+            batch-type:
+              type: string
+            claim-origin:
+              type: string
+            ortho-start:
+              type: string
+        kickout-reasons:
+            type: array
+            items:
+              type: string
+        provider-information:
+          type: object
+          properties:
+            address:
+              type: object
+              properties:
+                state:
+                 type: string
+                zipcode:
+                 type: string
+                city:
+                 type: string 
+                line1:
+                 type: string
+        phone-number:
+              type: string
+        tax-id:
+              type: string
+        npi-number:
+              type: string
+        name:
+              type: object
+              properties:
+                middle-initial:
+                 type: string
+                first-name:
+                 type: string
+                last-name:
+                 type: string 
+        edi-remarks:
+            type: array
+            items:
+              type: string
+    service-detail:   
+      type: object
+      properties:
+        service-date:
+          type: string
+        cavity-area:
+          type: string
+        quantity:
+          type: string
+        first-place-date:
+          type: string
+        tooth-number:
+          type: string
+        surface-list:
+            type: array
+            items:
+              type: string
+        charge-amount:
+          type: string
+        ada:
+          type: string
+    claim-indicators:
+      type: object
+      properties:
+        claim-indicators:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim-indicator'
+    claim-indicator:
+      type: object
+      properties:
+        key:
+          type: string
+          example: "RemarksIndicator"
+        value:
+          type: string
+    remarks-add:
+      type: object
+      properties:
+        message-id:
+          type: string
+          example: "generated Message-id"
+        status:
+          type: string
+    claims:
+      additionalProperties: false
+      type: object
+      properties:
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim'
+    remarks-response:
+      additionalProperties: false
+      type: object
+      properties:
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/remarks-add'
+    claim:
+      type: object
+      properties:
+        claim-number:
+          type: number
+        claim-status:
+          type: string
+        company-number:
+          type: string
+          example: 01 or 02
+        insured-id:
+          type: number
+        insured-name:
+          type: string
+        lobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/lob'
+        date-received:
+          type: string
+          format: date
+        padi-amount:
+          type: number
+        paid-benefit-count:
+          type: number
+        pended-benfit-count:
+          type: number
+        denied-benefit-count:
+          type: number
+        begin-treatment-date:
+          type: string
+          format: date
+        end-treatment-date:
+          type: string
+          format: date
+        occurence-date:
+          type: array
+          items:
+            $ref: '#/components/schemas/date'
+        diagnosis-code:
+          type: array
+          items:
+            $ref: '#/components/schemas/code'
+        dates-paid:
+          type: array
+          items:
+            $ref: '#/components/schemas/date-time'
+        number-of-check:
+          type: number
+        claimant:
+          type: object
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+            dob:
+              type: string
+              format: date
+            ssn:
+              type: string
+            gender:
+              type: string
+            relationship:
+              type: string
+        policy-numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/number'
+        submission-channel:
+          type: string
+        claim-status-reason-code:
+          type: string
+    lob:
+      type: object
+      properties:
+        lob:
+          type: string
+    date:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+    code:
+      type: object
+      properties:
+        code:
+          type: string
+    date-time:
+      type: object
+      properties:
+        date-time:
+          type: string
+          format: date
+    number:
+      type: object
+      properties:
+        number:
+          type: number
+    claim-detail:
+      type: object
+      properties:
+        claim-detail:
+          type: object
+          properties:
+            claim-number:
+              type: string
+            denied-benefit-count:
+              type: string
+            insured-name:
+              type: string
+            begin-treatment-date:
+              type: string
+            date-received:
+              type: string
+            insured-id:
+              type: string
+              format: nullable
+            policy-numbers:
+              type: array
+              items:
+                type: object
+                properties:
+                  number:
+                    type: string
+            paid-amount:
+              type: string
+            number-of-check:
+              type: string
+            company-number:
+              type: string
+            paid-benefit-count:
+              type: string
+            lobs:
+              type: array
+              items:
+                type: object
+                properties:
+                  lob:
+                    type: string
+            total:
+              type: string
+            dates-paid:
+              type: array
+              items:
+                type: object
+                properties:
+                  date-time:
+                    type: string
+            end-treatment-date:
+              type: string
+            edi-count-indicator:
+              type: string
+            has-remarks:
+              type: string
+            claimant:
+              type: object
+              properties:
+                dob:
+                  type: string
+                relationship:
+                  type: string
+                gender:
+                  type: string
+                age:
+                  type: string
+                name:
+                  type: string
+                ssn:
+                  type: string
+            pended-benefit-count:
+              type: string
+            sheets:
+              type: array
+              items:
+                type: object
+                properties:
+                  payment-notes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        description:
+                          type: string
+                        code:
+                          type: string
+                  fob-startdate:
+                    type: string
+                  tran-code:
+                    type: string
+                  iPorOP:
+                    type: string
+                  date-processed:
+                    type: string
+                  date-paid:
+                    type: string
+                  sheet-number:
+                    type: string
+                  gender:
+                    type: string
+                  benefits:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        policy-units:
+                          type: string
+                        phase-units-paid:
+                          type: string
+                        provider-number:
+                          type: string
+                          format: nullable
+                        ben-code:
+                          type: string
+                        benefit-name:
+                          type: string
+                        benefit-paid:
+                          type: string
+                        payee:
+                          type: string
+                        charge-amount:
+                          type: string
+                        treatment-date:
+                          type: string
+                        surgical-code:
+                          type: string
+                  treatement-end-date:
+                    type: string
+                  pre-tax:
+                    type: string
+                    format: nullable
+                  remarks:
+                    type: string
+                  claim-codes:
+                    type: array
+                    items:
+                      type: string
+                      format: nullable
+                  treatement-begin-date:
+                    type: string
+                  approver:
+                    type: string
+                    format: nullable
+                  lob:
+                    type: string
+                  status:
+                    type: string
+                  current-due-date:
+                    type: string
+                  pay-status:
+                    type: string
+                    format: nullable
+                  benefits-count:
+                    type: string
+                  created-by:
+                    type: string
+                  plan-code:
+                    type: string
+                  policy-number:
+                    type: string
+                  occurence-date:
+                    type: string
+                  pended-date:
+                    type: string
+                  diagnosis-date:
+                    type: string
+                    format: nullable
+                  diagnosis-code:
+                    type: string
+                  plan-codes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                  date-recieved:
+                    type: string
+                  insured:
+                    type: string
+                  provider-number:
+                    type: string
+                    format: nullable
+                  pended-reason:
+                    type: string
+                    format: nullable
+                  total:
+                    type: string
+                  relationship:
+                    type: string
+                  exception-flag:
+                    type: string
+                  effective-date:
+                    type: string
+            status:
+              type: string                    
+            benefits:
+              type: array
+              items:
+                type: object
+                properties:
+                  benefit-description:
+                    type: string
+                  decision:
+                    type: string
+                  payable-amount:
+                    type: number
+                  status:
+                    type: string
+                  status-date:
+                    type: string
+                    format: date
+
+            checks:
+              type: array
+              items:
+                type: object
+                properties:
+                  amount:
+                    type: string
+                  check-date:
+                    type: string
+                    format: date
+                  disbursment:
+                    type: string
+                  payee:
+                    type: string
+                  status:
+                    type: string
+
+  responses:
+    only-metadata-responses-without-pagination-info:
+      description:  response without pagination-info
+      headers:
+        aflac-correlation-id:
+          $ref: '#/components/headers/aflac-correlation-id'
+        aflac-transaction-id:
+          $ref: '#/components/headers/aflac-transaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              #/components/schemas/aflac-metadata-without-pagination-info-response
+        application/xml:
+          schema:
+            $ref: >-
+              #/components/schemas/aflac-metadata-without-pagination-info-response
+    only-metadata-responses-with-pagination:
+      description: Health response
+      headers:
+        aflac-correlation-id:
+          $ref: '#/components/headers/aflac-correlation-id'
+        aflac-transaction-id:
+          $ref: '#/components/headers/aflac-transaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/aflac-response-metadata'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/aflac-response-metadata'
+    remarks-response:
+      description: General Claims Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/remarks-response'
+            type: object
+    claims-response:
+      description: General Claims Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                $ref: '#/components/schemas/claims'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    claim-detail-response:
+      description: General Claims Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/claim-detail'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    claim-remarks-response:
+      description: Claims Remarks Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/claim-remarks'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    claim-checks-response:
+      description: Claims Checks Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/claim-checks'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    claim-status-response:
+      description: Claims Status Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-response-metadata
+              data:
+                $ref: '#/components/schemas/claim-statuses'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+            
+    claim-search-options-response:
+      description: Claims Search Option Details Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-metadata-without-pagination-info-response'
+              data:
+                $ref: '#/components/schemas/claim-search-option'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+            
+    claim-ccn-details-response:
+      description: Claims CCN Details Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: '#/components/schemas/aflac-metadata-without-pagination-info-response'
+              data:
+                $ref: '#/components/schemas/claim-ccn-detail'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+    claim-ccn-list-response:
+      description: Claims CCN list Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-response-metadata
+              data:
+                $ref: '#/components/schemas/claim-ccn-list'
+            type: object
+            
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string            
+    claim-edi-detail-response:
+      description: Claims EDI Details Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/claim-edi-detail'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+        
+            
+            
+    claim-indicators-response:
+      description: Claims Indicators Response
+      content:
+        application/json:
+          schema:
+            properties:
+              metadata:
+                $ref: >-
+                  #/components/schemas/aflac-metadata-without-pagination-info-response
+              data:
+                $ref: '#/components/schemas/claim-indicators'
+            type: object
+      headers:
+        aflac-correlation-id:
+          schema:
+            type: string
+        aflac-transaction-id:
+          schema:
+            type: string
+  requestBodies:
+    claim-remarks-request:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/claim-remarks-request-payload'
+    policy-remarks-request:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/policy-remarks-request-payload'

@@ -1,0 +1,1192 @@
+openapi: 3.0.0
+info:
+  title: p-health-care
+  version: v1
+servers:
+  - url: 'http://api.aflac.com/p-health-care/{version}'
+    variables:
+      version:
+        default: version
+paths:
+  /health:
+    get:
+      operationId: GET /health
+      responses:
+        "200":
+          description: 'The health response indicates the health of API'
+  /medical-record-requests:
+    post:
+      operationId: POST /medical-record-requests
+      parameters:
+        - name: selection-criteria
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref:  '#/components/requestBodies/medical-records'
+      responses:
+        "200":
+          description: The response when the operation is synchronously called.  It returns the created record(s).
+          content:
+            '*/*':
+              schema:          
+                type: object
+                properties:
+                  medical-record-request-web-order-id:
+                    type: string
+                  medical-record-request-id:
+                    type: string
+                  autho-upload-status:
+                    type: string
+                  autho-upload-fail-message:
+                    type: string
+        "201":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+        "500":
+          description: 'The response when there is an error'
+    
+  /medical-record-requests/{medical-record-request-id}:
+    get:
+      operationId: GET /medical-record-requests/{medical-record-request-id}
+      parameters:
+      - name: medical-record-request-id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: selection-criteria
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: 'The response when the operation is synchronously called.  It returns the queried record(s).'
+          content:
+            '*/*':
+              schema:          
+                type: object
+                properties:
+                  medical-record-request-web-order-id:
+                    type: integer
+                  medical-record-request-id:
+                    type: integer
+                  medical-record-request-status:
+                    type: string
+                  ecm-content-id:
+                    type: string
+        "500":
+          description: 'The response when there is an error'
+  /medical-records/{medical-record-id}:
+    get:
+      operationId: GET /medical-records/{medical-record-id}
+      parameters:
+      - name: medical-record-id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: selection-criteria
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: 'The response when the operation is synchronously called.  It returns the queried record(s).'
+        "500":
+          description: 'The response when there is an error'
+  /lab-records:
+    post:
+      operationId: POST /lab-records
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                properties:
+                  id:
+                    type: string
+                  requester:
+                    $ref: '#/components/schemas/requester'
+                  proposed-insured:
+                    allOf:
+                     - $ref: '#/components/schemas/proposed-insured'
+                     - type: object
+                       properties:
+                         alternate-tax-id:
+                           type: string
+                         line2:
+                           type: string
+                         state-type-code:
+                           type: integer
+                  fulfillers:
+                    $ref: '#/components/schemas/fulfillers'
+                  holding-party-relations:
+                    $ref: '#/components/schemas/holding-party-relations'
+                  holding:
+                    $ref: '#/components/schemas/holding'
+      responses:
+        "202":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+          content:
+            '*/*':
+              schema:          
+                type: object
+                properties:
+                  response-code:
+                    type: string
+                  response:
+                    type: string
+        "500":
+          description: 'The response when there is an error'
+  /prescription-records:
+    post:
+      operationId: POST /prescription-records
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                properties:
+                  requester:
+                    $ref: '#/components/schemas/requester'
+                  holding:
+                    $ref: '#/components/schemas/holding'
+                  holding-party-relations:
+                    $ref: '#/components/schemas/holding-party-relations'
+                  proposed-insured:
+                    $ref: '#/components/schemas/proposed-insured'
+      responses:
+        "200":
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  properties:
+                    holding:
+                      allOf:
+                      - $ref: '#/components/schemas/holding'
+                    parties:
+                      type: array
+                      items:
+                        oneOf:  
+                          - $ref: '#/components/schemas/parties-fullfiller'
+                          - $ref: '#/components/schemas/parties-applicant'
+                          - $ref: '#/components/schemas/parties-carrier'
+                          - $ref: '#/components/schemas/parties-physician'
+                          - $ref: '#/components/schemas/parties-pharmacy'
+        "201":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+        "500":
+          description: 'The response when there is an error'
+  /inspection-reports:
+    post:
+      operationId: POST /inspection-reports
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                properties:
+                  id:
+                    type: string
+                  requester:
+                    $ref: '#/components/schemas/requester'
+                  proposed-insured:
+                    allOf:
+                     - $ref: '#/components/schemas/proposed-insured'
+                     - type: object
+                       properties:
+                         address-state-type-code:
+                           type: integer
+                         drivers-licence-number:
+                           type: string
+                         drivers-license-state:
+                           type: string
+                         drivers-license-state-type-code:
+                           type: integer
+                         maritial-status:
+                           type: string
+                         maritial-status-type-code:
+                           type: integer
+                  holding-party-relations:
+                    $ref: '#/components/schemas/holding-party-relations'
+                  holding:
+                    $ref: '#/components/schemas/holding'
+      responses:
+        "202":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+          content:
+            '*/*':
+              schema:          
+                type: object
+                properties:
+                  response-code:
+                    type: string
+                  response:
+                    type: string
+        "500":
+          description: 'The response when there is an error'
+  /motor-vehicle-reports:
+    post:
+      operationId: POST /motor-vehicle-reports
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                properties:
+                  id:
+                    type: string
+                  requester:
+                    $ref: '#/components/schemas/requester'
+                  proposed-insured:
+                    allOf:
+                     - $ref: '#/components/schemas/proposed-insured'
+                     - type: object
+                       properties:
+                         address-state-type-code:
+                           type: integer
+                         drivers-licence-number:
+                           type: string
+                         drivers-license-state:
+                           type: string
+                         drivers-license-state-type-code:
+                           type: integer
+                         line2:
+                           type: string
+                         state-type-code:
+                           type: integer
+                  holding-party-relations:
+                    $ref: '#/components/schemas/holding-party-relations'
+                  holding:
+                    $ref: '#/components/schemas/holding'
+      responses:
+        "200":
+          description: ''
+          content:
+            '*/*':
+              schema:          
+                type: object
+                properties:
+                  holding:
+                    $ref: '#/components/schemas/holding-for-motor-vehicle-reports'
+                  parties:
+                    $ref: '#/components/schemas/parties'
+        "202":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+        "201":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+        "500":
+          description: 'The response when there is an error'
+  /policy/remarks:
+    get:
+      operationId: GET /policy/remarks
+      parameters:
+        - name: company-number
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: policy-number
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page-number
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: page-size
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: sort-order
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 'The response when the operation is synchronously called.  It returns the queried record(s).'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/policy-remarks'
+        "500":
+          description: 'The response when there is an error'
+  /health-piqture-reports:
+    post:
+      operationId: POST /health-piqture-reports
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                properties:
+                  requester:
+                    $ref: '#/components/schemas/requester'
+                  holding:
+                    $ref: '#/components/schemas/holding'
+                  holding-party-relations:
+                    $ref: '#/components/schemas/holding-party-relations'
+                  proposed-insured:
+                    $ref: '#/components/schemas/proposed-insured'
+      responses:
+        "201":
+          description: 'The response when the operation is synchronously called.  It returns the created record(s).'
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  properties:
+                    holding:
+                      allOf:
+                      - $ref: '#/components/schemas/holding'
+                    parties:
+                      type: array
+                      items:
+                        oneOf:  
+                          - $ref: '#/components/schemas/parties-fullfiller'
+                          - $ref: '#/components/schemas/parties-applicant'
+                          - $ref: '#/components/schemas/parties-carrier'
+                          - $ref: '#/components/schemas/parties-physician'
+                          - $ref: '#/components/schemas/parties-pharmacy'
+        "500":
+          description: 'The response when there is an error'  
+          
+components:
+  requestBodies:
+    medical-records:
+      content:
+        '*/*':
+          schema:         
+            type: object
+            properties:
+              ecm-content-id:
+                type: string
+              patient-details:
+                type: object
+                properties:
+                  Ssn:
+                    type: string
+                  address:
+                    type: string
+                  carrier-code:
+                    type: string
+                  case-manager:
+                    type: string
+                  city:
+                    type: string
+                  date-of-birth:
+                    type: string
+                  day-time-phone:
+                    type: string
+                  email:
+                    type: string
+                  fax:
+                    type: string
+                  first-name:
+                    type: string
+                  hearing-date:
+                    type: string
+                  last-name:
+                    type: string
+                  middle-initial:
+                    type: string
+                  notification-email:
+                    type: string
+                  phone:
+                    type: string
+                  policy-number:
+                    type: string
+                  request-date:
+                    type: string
+                  rush-order:
+                    type: boolean
+                  source-code:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+              provider-details:
+                type: object
+                properties:     
+                  account:
+                    type: string
+                  address:
+                    type: string
+                  city:
+                    type: string
+                  date-from:
+                    type: string
+                  date-to:
+                    type: string
+                  fax:
+                    type: string
+                  get-all-records:
+                    type: boolean
+                  get-records-to-present:
+                    type: boolean
+                  medical-record-number:
+                    type: string
+                  name:
+                    type: string
+                  phone:
+                    type: string
+                  special-attention:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+  schemas:
+    requester:
+      type: object
+      properties:
+        full-name:
+          type: string
+        id:
+          type: string
+        org-form-name:
+          type: string
+        requester-first-name:
+          type: string
+        requester-last-name:
+          type: string
+        org-form-type-code:
+          type: integer
+        party-type:
+          type: string
+        party-type-code:
+          type: integer
+    proposed-insured:
+      type: object
+      properties:
+        address-type:
+          type: string
+        address-type-code:
+          type: integer
+        city:
+          type: string
+        date-of-birth:
+          type: string
+        email-addresses:
+          type: array
+          items:
+            properties:
+              address-line:
+                type: string
+        first-name:
+          type: string
+        gender:
+          type: string
+        gender-type-code:
+          type: integer
+        government-id:
+          type: string
+        government-id-type:
+          type: string
+        government-id-type-code:
+          type: integer
+        id:
+          type: string
+        last-name:
+          type: string
+        line1:
+          type: string
+        middle-name:
+          type: string
+        party-type:
+          type: string
+        party-type-code:
+          type: integer
+        phones:
+          type: array
+          items:
+            properties:
+              area-code:
+                type: string
+              dial-number:
+                type: string
+              phone-type:
+                type: string
+              phone-type-code:
+                type: integer
+        state:
+          type: string
+        zip:
+          type: string
+    fulfillers:
+      type: array
+      items:
+        properties:
+          full-name:
+            type: string
+          id:
+            type: string
+          org-code:
+            type: string
+          org-form-name:
+            type: string
+          org-form-type-code:
+            type: integer
+          party-type:
+            type: string
+          party-type-code:
+            type: integer
+    holding-party-relations:
+      type: array
+      items:
+        properties:
+          originating-object-id:
+            type: string
+          originating-object-type:
+            type: string
+          originating-object-type-code:
+            type: integer
+          related-object-id:
+            type: string
+          related-object-type:
+            type: string
+          related-object-type-code:
+            type: integer
+          relation-id:
+            type: string
+          relation-role-code:
+            type: string
+          relation-role-type-code:
+            type: integer
+    holding:
+      type: object
+      properties:
+        attachment:
+          type: object
+          properties:
+            attachment-data:
+              type: string
+            attachment-type:
+              type: string
+            attachment-type-code:
+              type: integer
+        holding-form:
+          type: string
+        holding-form-type-code:
+          type: string
+        holding-id:
+          type: string
+        holding-type:
+          type: string
+        holding-type-code:
+          type: integer 
+        policy:
+          type: object
+          properties:
+            carrier-party-id:
+              type: string
+            life:
+              type: object
+              properties:
+                coverage:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        type: string
+                      indicator-code:
+                        type: string
+                      indicator-code-type-code:
+                        type: integer
+                      life-participant:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                            party-id:
+                              type: string
+                            role-code:
+                              type: string
+                            role-type-code:
+                              type: integer 
+                face-amount:
+                  type: string
+            line-of-business:
+              type: string
+            line-of-business-type-code:
+              type: integer
+            policy-number:
+              type: string
+            policy-status:
+              type: string
+            policy-status-type-code:
+              type: integer
+            product-code:
+              type: string
+            product-type:
+              type: string
+            product-type-code:
+              type: integer
+            requirements:
+              type: array
+              items:
+                properties:
+                  applies-to-party-id:
+                    type: string
+                  fulfiller-party-id:
+                    type: string
+                  id:
+                    type: string
+                  req-code:
+                    type: string
+                  req-code-type-code:
+                    type: integer
+                  requested-date:
+                    type: string
+                  requester-contact-party-id:
+                    type: string
+                  requester-party-id:
+                    type: string
+                  requirement-account-number:
+                    type: string
+                  requirement-details:
+                    type: string
+                  requirement-unique-id:
+                    type: string
+            source-application-info:
+              type: object
+              properties:
+                source-info-name:
+                  type: string
+                source-tracking-id:
+                  type: string
+                preferred-language:
+                  type: string  
+    parties:
+      type: array
+      items:
+        properties:
+          id:
+            type: string   
+          party-type:
+            type: string
+          party-type-code:
+            type: integer
+          government-id:
+            type: string
+          government-id-type:
+            type: string
+          government-id-type-code:
+            type: string
+          person:
+            type: object
+            properties:
+              first-name:
+                type: string
+              last-name:
+                type: string
+              date-of-birth:
+                type: string
+              drivers-license-number:
+                type: string
+              drivers-license-state:
+                type: string
+              drivers-license-state-type-code:
+                type: string
+              gender-type-code:
+                type: string
+              gender:
+                type: string
+          addresses:
+            type: array
+            items:
+              properties:
+                address-type:
+                  type: string
+                address-type-code:
+                  type: string
+                line1:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                address-state-type-code:
+                  type: string
+                zip:
+                  type: string
+    holding-for-motor-vehicle-reports:
+      type: object
+      properties:
+        holding-type-code:
+          type: string
+        holding-type:
+          type: string
+        holding-id:
+          type: string
+        policy:
+          type: object
+          properties:
+            line-of-business-code:
+              type: string
+            policy-status:
+              type: string
+            policy-status-type-code:
+              type: string
+            life:
+              type: object
+              properties:
+                face-amount:
+                  type: object
+                  properties:
+                    FaceAmt:
+                      type: string
+            source-application-info:
+              type: object
+              properties:
+                source-info-name:
+                  type: string
+                source-tracking-id:
+                  type: string
+            requirements:
+              type: array
+              items:
+                properties:
+                  applies-to-party-id:
+                    type: string
+                  req-code:
+                    type: string
+                  req-code-type-code:
+                    type: string
+                  requirement-account-number:
+                    type: string
+                  requirement-status:
+                    type: string
+                  requirement-status-type-code:
+                    type: string
+                  fulfilled-date:
+                    type: string
+                  status-date:
+                    type: string
+                  provider-order-number:
+                    type: string
+                  status-events:
+                    type: string
+                  requirement-extension:
+                    type: string
+                  motor-vehicle-reports:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          type: string
+                        order-number:
+                          type: string
+                        pnc-account:
+                          type: string
+                        identification:
+                          type: object
+                          properties:
+                            addresses:
+                              type: array
+                              items:
+                                type: string
+                            date-of-birth:
+                              type: string
+                            height:
+                              type: string
+                            gender:
+                              type: string
+                            gender-type-code:
+                              type: string
+                        driver-license:
+                          type: object
+                          properties:
+                            drivers-license-number:
+                              type: string
+                            drivers-license-state:
+                              type: string
+                            drivers-license-class:
+                              type: string
+                            issue-date:
+                              type: string
+                            expiration-date:
+                              type: string
+                            status:
+                              type: string
+                        violations-details:
+                          type: array
+                          items:
+                            properties:
+                              violation-code:
+                                type: string
+                              violation-date:
+                                type: string
+                              violation-description:
+                                type: string
+                              violation-type:
+                                type: string
+                              suspension-date:
+                                type: string
+                              conviction-reinstatement-date:
+                                type: string
+                              violation-detailed-descriptions:
+                                type: array
+                                items:
+                                  type: string
+                              state-violation-code:
+                                type: string
+                              standard-violation:
+                                type: object
+                                properties:
+                                  code:
+                                    type: string
+                                  classification:
+                                    type: string
+                                  point-assignment:
+                                    type: string
+                                  speeding-over-limit:
+                                    type: string
+                                  speeding-speed-limit:
+                                    type: string
+                                  description:
+                                    type: array
+                                    items:
+                                      type: string
+                        messages:
+                          type: array
+                          items:
+                            properties:
+                              message-type:
+                                type: string
+                              message-content:
+                                type: string
+    parties-fullfiller:
+      type: object
+      properties:
+          id:
+            type: string
+          party-type:
+            type: string
+          party-type-code:
+            type: string
+          full-name:
+            type: string
+          organization:
+            type: object
+            properties:
+              org-form-name:
+                type: string
+              org-form-type-code:
+                type: string
+              org-code:
+                type: string
+    parties-applicant:
+      type: object
+      properties:
+          id:
+            type: string
+          party-type:
+            type: string
+          party-type-code:
+            type: string
+          government-id:
+            type: string
+          party-order-key:
+            type: string
+          person:
+            type: object
+            properties:
+              first-name:
+                type: string
+              last-name:
+                type: string
+              date-of-birth:
+                type: string
+              gender-type-code:
+                type: string
+              gender:
+                type: string
+          addresses:
+            type: array
+            items:
+              properties:
+                address-type:
+                  type: string
+                address-type-code:
+                  type: string
+                zip:
+                  type: string
+          risk:
+            type: object
+            properties:
+              presciption-data-status-type:
+                type: string
+              presciption-data-status-type-code:
+                type: string
+              medical-conditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                    condition-description:
+                      type: string
+                    likelihood:
+                      type: string
+                    medical-condition-code:
+                      type: string
+              prescription-drugs:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                    prescription-drug-type:
+                      type: string
+                    prescription-drug-type-code:
+                      type: string
+                    prescription-code:
+                      type: string
+                    prescription-label:
+                      type: string
+                    prescription-dosage-form:
+                      type: string
+                    prescription-dosage-form-type-code:
+                      type: string
+                    therapeutic-class:
+                      type: string
+                    therapeutic-class-type-code:
+                      type: string
+                    prescription-fills:
+                      type: array
+                      items:
+                        properties:
+                          physician-id:
+                            type: string
+                          pharmacy-id:
+                            type: string
+                          prescription-number:
+                            type: string
+                          prescription-fill-number:
+                            type: string
+                          prescription-fill-date:
+                            type: string
+                          prescription-total-refill-allowed:
+                            type: string
+                          prescription-days-supply:
+                            type: string
+                          prescription-quantity-dispensed:
+                            type: string
+                          prescription-strength:
+                            type: string
+    parties-carrier:
+      type: object
+      properties:
+        id:
+          type: string
+        party-type:
+          type: string
+        party-type-code:
+          type: string
+        full-name:
+          type: string
+        organization:
+          type: object
+          properties:
+            org-form-name:
+              type: string
+            org-form-type-code:
+              type: string
+    parties-physician:
+      type: object
+      properties:
+        id:
+          type: string
+        party-type:
+          type: string
+        party-type-code:
+          type: string
+        person:
+          type: object
+          properties: 
+            first-name:
+              type: string
+            last-name:
+              type: string
+            title:
+              type: string
+        addresses:
+          type: array
+          items:
+            properties:
+              address-type:
+                type: string
+              address-type-code:
+                type: string
+              line1:
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              address-state-type-code:
+                type: string
+              zip:
+                type: string
+        physician:
+          type: object
+          properties:
+            id:
+              type: string
+            provider-type:
+              type: string
+            provider-type-code:
+              type: string
+            provider-number:
+              type: string
+            physician-speciality:
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+        phones:
+          type: array
+          items:
+            properties:
+              phone-type:
+                type: string
+              phone-type-code:
+                type: string
+              area-code:
+                type: string
+              dial-number:
+                type: string
+    parties-pharmacy:
+      type: object
+      properties:
+        id:
+          type: string
+        party-type:
+          type: string
+        party-type-code:
+          type: string
+        full-name:
+          type: string
+        addresses:
+          type: array
+          items:
+             properties:
+               address-type:
+                 type: string
+               address-type-code:
+                 type: string
+               line1:
+                 type: string
+               city:
+                 type: string
+               state:
+                 type: string
+               address-state-type-code:
+                 type: string
+               zip:
+                 type: string
+        phones:
+          type: array
+          items:
+            properties:
+              phone-type:
+                type: string
+              phone-type-code:
+                type: string
+              area-code:
+                type: string
+              dial-number:
+                type: string
+        pharmacy:
+          type: object
+          properties:
+            provider-type:
+              type: string
+            provider-type-code:
+              type: string
+            provider-number:
+              type: string
+    policy-remarks:
+      type: array
+      items:
+        properties:
+          company-number:
+            type: string
+          policy-number:
+            type: string
+          user-id:
+            type: string
+          critical-indicator:
+            type: string
+          remark-date:
+            type: string
+          remark-time:
+            type: string
+          sequence-number:
+            type: string
+          desk-code:
+            type: string
+          e-number:
+            type: string
+          disclosure-indicator:
+            type: boolean
+          disclosed-name:
+            type: string
+          address:
+            type: object
+            properties:
+              disclosed-address-line1:
+                type: string
+              disclosed-address-line2:
+                type: string
+              disclosed-address-line3:
+                type: string
+              disclosed-address-line4:
+                type: string
+          purpose:
+            type: object
+            properties:
+              diclosed-purpose1:
+                type: string
+              diclosed-purpose2:
+                type: string
+              diclosed-purpose3:
+                type: string
+          remark:
+            type: object
+            properties:
+              remark_line1:
+                type: string
+              remark_line2:
+                type: string
+              remark_line3:
+                type: string
+              remark_line4:
+                type: string
+              remark_line5:
+                type: string
+          location-state:
+            type: string
+          

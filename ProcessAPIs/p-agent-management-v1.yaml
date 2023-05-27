@@ -1,0 +1,964 @@
+openapi: 3.0.0
+info:
+  title: 'p-agent-managment-service'
+  version: v1
+  description: 'Process  API for p-agent-management Setup & Maintenance'
+paths:
+  /health:
+    get:
+      responses:
+        '2XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+      operationId: GET /health
+  
+  /agents/{agentId}/new-and-pended-businesses:
+    parameters:
+    - name: agentId
+      description: id of the specific agent
+      in: path
+      schema:
+        type: string
+      required: true
+
+    get:
+      operationId: GET /agents/{agentId}/new-and-pended-businesses
+      description: It searches all the details of agent and new pended business list
+      responses:
+        '200':
+          $ref: '#/components/responses/pended-businesses-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+      parameters:
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-processing-style"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/level"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+        
+  /agents:
+    get:
+      description: It searches all the details of Agent Lists on given writingNumber or insuranceAgreementId or insuredId or emailAddress or TaxID or SSN. Returns the following code as per the output per these return codes
+      operationId: GET /agents      
+      parameters:
+        - $ref: "#/components/parameters/aflac-processing-style"
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/writing-number"
+        - $ref: "#/components/parameters/email-address"
+        - $ref: "#/components/parameters/insured-id"
+        - $ref: "#/components/parameters/insurance-agreement-id"
+        - $ref: "#/components/parameters/tax-id"
+        - $ref: "#/components/parameters/ssn"
+        - $ref: "#/components/parameters/first-name"
+        - $ref: "#/components/parameters/last-name"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+      responses:
+        "2XX":
+          $ref: '#/components/responses/agents-response'
+        "4XX":
+          $ref: '#/components/responses/only-metadata-responses'
+        "5XX":
+          $ref: '#/components/responses/only-metadata-responses'
+        
+  /agents/{agentId}/management-hierarchy:
+    parameters:
+      - name: agentId
+        description: id of the specific agent
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /agents/{agentId}/management-hierarchy
+      description: It searches the details of Agent Management hierarchy.
+      responses:
+        '200':
+          $ref: '#/components/responses/management-hierarchy-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+      parameters:
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-processing-style"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+  /agents/{agentId}/entity-producers:
+     parameters:
+      - name: agentId
+        description: id of the specific agent
+        in: path
+        schema:
+          type: string
+        required: true
+     get:
+      operationId: GET/agents/{agentId}/entity-producers
+      description: It searches all the details AgentEntityProducerList.
+      parameters:
+       - $ref: "#/components/parameters/aflac-openid-token"
+       - $ref: "#/components/parameters/aflac-processing-style"
+       - $ref: "#/components/parameters/company-number"
+       - $ref: "#/components/parameters/page-number"
+       - $ref: "#/components/parameters/page-size"
+      responses:
+        '200':
+          $ref: '#/components/responses/producer-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+  /agents/{agentId}:
+    parameters:
+      - name: agentId
+        description: id of the specific agent
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /agents/{agentId}
+      description: It searches agent details.
+      parameters:
+       - $ref: "#/components/parameters/aflac-openid-token"
+       - $ref: "#/components/parameters/aflac-processing-style"
+       - $ref: "#/components/parameters/company-number"
+      responses:
+        '200':
+          $ref: '#/components/responses/agent-details-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        
+    
+  /agents/{agentId}/licenses:
+    parameters:
+      - name: agentId
+        description: id of the specific agent
+        in: path
+        schema:
+          type: string
+        required: true
+        
+    get:
+      operationId: GET /agents/{agentId}/licenses
+      description: It searches all the details of AgentLicenseList.      
+      parameters:
+        - $ref: "#/components/parameters/aflac-processing-style"
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+      responses:
+        "2XX":
+          $ref: '#/components/responses/licenses-response'
+        "4XX":
+          $ref: '#/components/responses/only-metadata-responses'
+        "5XX":
+          $ref: '#/components/responses/only-metadata-responses'
+    
+  /agents/{agentId}/contracts:
+    parameters:
+      - name: agentId
+        description: id of the specific agent
+        in: path
+        schema:
+          type: string
+        required: true
+    get:
+      operationId: GET /agents/{agentId}/contracts
+      description: contract by companynumber and agent-id
+      parameters:
+        - $ref: "#/components/parameters/aflac-openid-token"
+        - $ref: "#/components/parameters/aflac-processing-style"
+        - $ref: "#/components/parameters/company-number"
+        - $ref: "#/components/parameters/page-number"
+        - $ref: "#/components/parameters/page-size"
+      responses:
+        '200':
+          $ref: '#/components/responses/contract-response'
+        '4XX':
+          $ref: '#/components/responses/only-metadata-responses'
+        '5XX':
+          $ref: '#/components/responses/only-metadata-responses'
+          
+
+components:
+  schemas:
+    code-description:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        type:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        code:
+          type: string
+        short-description:
+          type: string
+        long-description:
+          type: string
+    pagingInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        pageNumber:
+          type: string
+        pageSize:
+          type: string
+        totalPageCount:
+          type: string 
+        hasMorePages:
+          type: string 
+    code-descriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/code-description" 
+    agent:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+        companyNumber:
+          type: string
+        policyNumber:
+          type: string
+        firstName:
+          type: string
+        isRestricted:
+          type: string
+        lastName:
+          type: string
+        SSN:
+          type: string
+        hireState:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        emailList:
+          $ref: "#/components/schemas/emails"
+        middleNmae:
+          type: string
+        writingNumber:
+          type: string
+        salutation:
+          type: string
+        hasMultipleWritingNumbers:
+          type: string
+        addressList:
+          $ref: "#/components/schemas/addresses"
+        phoneNumberList:
+          $ref: "#/components/schemas/phones"          
+    managerName:
+      type: object
+      additionalProperties: false
+      properties:
+        last:
+          type: string
+        suffix:
+          type: string
+        first:
+          type: string
+        salutation:
+          type: string
+        middle:
+          type: string
+    advanceList:
+      type: object
+      additionalProperties: false
+      properties:
+        rateCode:
+          type: string
+        rule:
+          type: string
+        distributionPercentage:
+          type: string
+    contract:
+      type: object
+      additionalProperties: false
+      properties:
+        managerName :
+          $ref: "#/components/schemas/managerName"
+        associateType:
+          type: string
+        stateManagerCode:
+          type: string
+        stateCode:
+          type: string
+        fatsBlockPercentage:
+          type: string
+        advanceIndicator:
+          type: string
+        situationCode:
+          type: string
+        advanceType:
+          type: string
+        advanceList:
+          $ref: "#/components/schemas/advanceList"
+        startDate:
+          type: string
+        paidAsEarnedStartDate:
+          type: string
+        paidAsEarnedStopDate:
+          type: string
+        contractCode:
+          type: string
+        stateDesc:
+          type: string
+        remarks:
+          type: string
+        stoptDate:
+          type: string
+        level:
+          type: string
+        managerSit:
+          type: string
+        fatsStopDate:
+          type: string
+        fatsStartDate:
+          type: string
+        managerLevel:
+          type: string
+ 
+    contracts:
+      type: array
+      items:
+        $ref: "#/components/schemas/contract" 
+                 
+    name:
+      type: object
+      additionalProperties: false
+      properties:
+        last:
+          type: string
+        suffix:
+          type: string
+        first:
+          type: string
+        salutation:
+          type: string
+        middle:
+          type: string
+    producer :
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+        associateNumber:
+          type: string
+        name :
+          $ref: "#/components/schemas/name"
+        state:
+          type: string
+        ssn:
+          type: string    
+    producers:
+      type: array
+      items:
+        $ref: "#/components/schemas/producer"  
+     
+    pended-business:
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+        policyHolderName:
+          type: object
+          additionalProperties: false
+          properties:
+            middleInitial:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+        destination:
+          type: string
+        transactionNumber:
+          type: string
+        responseDate:
+          type: string
+        policyNumber:
+          type: string
+        planCode:
+          type: string
+        lobCode:
+          type: string
+        accountNumber:
+          type: string
+    pended-businesses:
+      type: array
+      items:
+        $ref: "#/components/schemas/pended-business"          
+    licenses:
+      type: array
+      items:
+        $ref: "#/components/schemas/licence"                 
+    licence:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+        isUl:
+          type: boolean
+        licenseNumber:
+          type: string
+        isCt8:
+          type: boolean
+        stateName:
+          type: string
+        stateCode:
+          type: string
+        isDisabled:
+          type: boolean
+        isMedsUp:
+          type: boolean 
+        isLtc:
+          type: boolean  
+        isLife:
+          type: boolean 
+        hasRenewalApplication:
+          type: boolean 
+        residenceType:
+          type: string
+        appointmentPendDate:
+          type: string
+        licenseEffectiveDate:
+          type: string
+        isAh:
+          type: boolean 
+        licenseExpireDate:
+          type: string
+        remarks:
+          type: string  
+        appointmentReinstatementDate:
+          type: string
+        appointmentEffectiveDate:
+          type: string
+        appointmentExpireDate:
+          type: string
+        isVul:
+          type: boolean 
+        isBlocked:
+          type: boolean 
+        appointmentTerminationDate:
+           type: string 
+    manager-contact-information:
+      type: object
+      additionalProperties: false
+      properties:
+        faxNumber:
+          type: string
+        phoneNumber:
+          type: string
+    manager-name:
+      type: object
+      additionalProperties: false
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+    management-name:
+      type: object
+      additionalProperties: false
+      properties:
+        startDate:
+          type: string
+        contractCode:
+          type: string
+        managerName:
+          $ref: "#/components/schemas/manager-name"
+        stateManagerCode:
+          type: string
+        managerContactInformation:
+          $ref: "#/components/schemas/manager-contact-information"
+        managerSituationCode:
+          type: string
+        managerWritingNumber:
+          type: string
+        managerLevel:
+          type: string
+    management-names:
+      type: array
+      items:
+        $ref: "#/components/schemas/management-name"
+    management-hierarchy:
+      type: object
+      additionalProperties: false
+      properties:
+        startDate:
+          type: string
+        contractCode:
+          type: string
+        level:
+          type: string
+        situationCode:
+          type: string
+        managementHierarchy:
+          $ref: "#/components/schemas/management-names"
+    language:
+      type: string
+    languages:
+      type: array
+      items: 
+        $ref: "#/components/schemas/language"
+    agent-detail:
+      type: object
+      additionalProperties: false
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        salutation:
+          type: string
+        writingNumber:
+          type: string
+        mailBlockedIndicator:
+          type: string
+        status:
+          type: string
+        phoneNumberList:
+          $ref: "#/components/schemas/phones"  
+        emailList:
+          $ref: "#/components/schemas/email"
+        addressList:
+          $ref: "#/components/schemas/addresses"
+        language:
+          $ref: "#/components/schemas/languages"
+        dateOfBirth:
+          type: string
+        spouseName:
+          type: string
+        contractDate:
+          type: string
+        pendingCancelDate:
+          type: string
+        entityNumber:
+          type: string
+        taxId:
+          type: string
+        regularFlexDate:
+          type: string
+        advancedFlexDate:
+          type: string
+        noPayRate:
+          type: string
+        terminationDate:
+          type: string
+        isPPI:
+          type: string
+        nationalProducerNumber:
+          type: string
+        isIncentiveFundContributor:
+          type: string
+        hasSpecialVestingAgreement:
+          type: string
+        creditUnionNumber:
+          type: string
+        agreementType:
+          type: string
+        adjustedServiceDate:
+          type: string
+        bridgingAgreementDate:
+          type: string
+        adjustedContestDate:
+          type: string
+        hasDailyEFT:
+          type: string
+        hasMonthlyEFT:
+          type: string
+        hasDrawEFT:
+          type: string
+        lastMaintenanceDate:
+          type: string
+        lastProduceDate:
+          type: string
+        letterSentDate:
+          type: string
+        licenseCancelDate:
+          type: string
+        reinstatementDate:
+          type: string
+    aflac-response-metadata:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+        pagination-info:
+          $ref: "#/components/schemas/pagingInfo"          
+    aflac-response-metadata-without-pagination:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failure
+        code:
+          type: string
+        descriptions:
+          $ref: "#/components/schemas/code-descriptions"
+        
+    management-hierarchies:
+      type: array
+      items:
+        $ref: "#/components/schemas/management-hierarchy"              
+    emails:
+      type: array
+      items:
+        $ref: "#/components/schemas/email"
+    addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/address"
+    phones:
+      type: array
+      items:
+        $ref: "#/components/schemas/phone"
+    address:
+      type: object
+      additionalProperties: false
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string        
+        addressType:
+          type: string
+    phone:
+      type: object
+      additionalProperties: false
+      properties:
+        context:
+          type: string
+        phoneNumber:
+          type: string
+    email:
+      type: object
+      additionalProperties: false
+      properties:
+        emailAddress:
+          type: string
+    agents:
+      type: array
+      items:
+        $ref: "#/components/schemas/agent"    
+
+    
+  responses:
+    agents-response:
+      description: 'agent entity response'
+      headers:
+        aflac-correlation-id:
+          schema: 
+            type: string
+        aflac-transaction-id:
+          schema: 
+            type: string
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentList:
+                    $ref: "#/components/schemas/agents"    
+    agent-details-response:
+      description: 'agent details response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata-without-pagination'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentDetail:
+                    $ref: "#/components/schemas/agent-detail"   
+   
+    licenses-response:
+      description: 'licenses response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentLicenseList:
+                    $ref: "#/components/schemas/licenses"  
+                                    
+    management-hierarchy-response:
+      description: 'management hierarchy response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentManagementHierarchyList:
+                    $ref: "#/components/schemas/management-hierarchies"
+    producer-response:
+      description: 'producer response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentEntityProducerList:
+                    $ref: "#/components/schemas/producers"      
+    contract-response:
+      description: 'contract response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  agentContractList:
+                    $ref: "#/components/schemas/contracts"                
+    pended-businesses-response:
+      description: 'pended businesses response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            properties: 
+              metadata:
+                $ref: '#/components/schemas/aflac-response-metadata-without-pagination'
+              data:
+                type: object
+                additionalProperties: false
+                properties:
+                  newAndPendedList:
+                    $ref: "#/components/schemas/pended-businesses"    
+
+    only-metadata-responses:
+      description: 'Health response'
+      headers:
+        aflac-correlation-id:
+          $ref: "#/components/headers/aflac-correlation-id"
+        aflac-transaction-id:
+          $ref: "#/components/headers/aflac-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/aflac-response-metadata'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/aflac-response-metadata'
+  parameters:
+    aflac-processing-style:
+      name: aflac-processing-style
+      in: header
+      required: false
+      schema:
+        type: string
+        enum:
+          - sync
+          - async
+    aflac-openid-token:
+      name: aflac-openid-token
+      in: header
+      required: false
+      schema:
+        type: string
+    
+    agent-id:
+      name: agent-id
+      in: path
+      required: true
+      schema:
+        type: string
+    company-number:
+      name: company-number
+      in: query
+      schema:
+        type: string
+      required: true 
+    level:
+      name: level
+      in: query
+      schema:
+        type: integer
+      required: true  
+    page-number:
+      name: page-number
+      in: query
+      schema:
+        type: integer
+      required: false
+    page-size:
+      name: page-size
+      in: query
+      schema:
+        type: integer
+      required: false
+    writing-number:
+      name: writing-number
+      in: query
+      schema:
+        type: string
+      required: false 
+    insured-id:
+      name: insured-id
+      in: query
+      schema:
+        type: string
+      required: false 
+    insurance-agreement-id:
+      name: insurance-agreement-id
+      in: query
+      schema:
+        type: string
+      required: false
+    email-address:
+      name: email-address
+      in: header
+      required: false
+      schema:
+        type: string 
+    tax-id:
+      name: tax-id
+      in: header
+      required: false
+      schema:
+        type: string 
+    ssn:
+      name: ssn
+      in: header
+      required: false
+      schema:
+        type: string
+    first-name:
+      name: first-name
+      in: header
+      required: false
+      schema:
+        type: string
+    last-name:
+      name: last-name
+      in: header
+      required: false
+      schema:
+        type: string
+  headers:
+    aflac-processing-style:
+      required: false
+      schema:
+        type: string
+        enum:
+          - sync
+          - async
+    aflac-openid-token:
+      required: false
+      schema:
+        type: string
+    aflac-correlation-id:
+      required: false
+      schema:
+        type: string
+    aflac-transaction-id:
+      required: false
+      schema:
+        type: string
+    aflac-consumer-id:
+      required: false
+      schema:
+        type: string
+    aflac-business-event:
+      required: false
+      schema:
+        type: string
